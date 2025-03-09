@@ -30,8 +30,9 @@ export class SettingsComponent implements OnInit {
     localStorage.setItem('preferredLanguage', lang);
     
     // Call the global changeLanguage function if it exists
-    if (typeof window['changeLanguage'] === 'function') {
-      window['changeLanguage'](lang);
+    const win = window as any;
+    if (typeof win.changeLanguage === 'function') {
+      win.changeLanguage(lang);
     }
   }
 }
