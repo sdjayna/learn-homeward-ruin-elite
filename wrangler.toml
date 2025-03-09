@@ -3,6 +3,7 @@
   command = "npm run build"
   publish = "dist/browser"
   node_bundler = "esbuild"
+  pages_build_output_dir = "dist/browser"
 
 [build.environment]
   NODE_VERSION = "20"
