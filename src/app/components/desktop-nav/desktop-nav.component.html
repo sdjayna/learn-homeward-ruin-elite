@@ -1,0 +1,11 @@
+<nav class="desktop-nav">
+  <div class="logo" [routerLink]="['/']">
+    <h1>Learning App</h1>
+  </div>
+  <div class="nav-links">
+    <a [routerLink]="['/']" [routerLinkActive]="'active'" [routerLinkActiveOptions]="{exact: true}">Home</a>
+    <a [routerLink]="['/study']" [routerLinkActive]="'active'">Study</a>
+    <a [routerLink]="['/progress']" [routerLinkActive]="'active'">Progress</a>
+    <a [routerLink]="['/settings']" [routerLinkActive]="'active'">Settings</a>
+  </div>
+</nav>
