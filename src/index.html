@@ -127,9 +127,7 @@
     </div>
   </header>
   
-  <div id="pwa-status" role="status" aria-live="polite" style="background-color: #f8d7da; color: #721c24; padding: 10px; margin: 10px; border-radius: 5px; display: none;">
-    Checking PWA and Service Worker status...
-  </div>
+  <!-- PWA status is now logged to console only -->
   <main>
     <app-root></app-root>
   </main>
@@ -258,10 +256,8 @@
       document.getElementById('footer-text').textContent = translations[lang].footerText;
     }
     
-    // Display PWA status
+    // Initialize PWA
     document.addEventListener('DOMContentLoaded', function() {
-      const statusBanner = document.getElementById('pwa-status');
-      statusBanner.style.display = 'block';
       
       // Set initial language based on browser settings
       const initialLang = getPreferredLanguage();
@@ -281,36 +277,25 @@
       
       // Check if service worker is supported
       if ('serviceWorker' in navigator) {
-        statusBanner.setAttribute('data-state', 'swSupported');
-        statusBanner.textContent = translations[initialLang].swSupported;
-        statusBanner.style.backgroundColor = '#d4edda';
-        statusBanner.style.color = '#155724';
+        console.debug('PWA: Service Worker is supported in this browser');
         
         // Check if service worker is registered
         navigator.serviceWorker.getRegistration().then(registration => {
           if (registration) {
-            statusBanner.setAttribute('data-state', 'pwaReady');
-            statusBanner.textContent = translations[initialLang].pwaReady;
+            console.debug('PWA: Service Worker is registered and active');
           } else {
-            statusBanner.setAttribute('data-state', 'swNotRegistered');
-            statusBanner.textContent = translations[initialLang].swNotRegistered;
-            statusBanner.style.backgroundColor = '#fff3cd';
-            statusBanner.style.color = '#856404';
+            console.debug('PWA: Service Worker supported but not yet registered');
           }
         });
         
         // Listen for messages from the service worker
         navigator.serviceWorker.addEventListener('message', event => {
           if (event.data && event.data.type === 'CACHE_COMPLETE') {
-            statusBanner.setAttribute('data-state', 'cacheComplete');
-            statusBanner.textContent = translations[initialLang].cacheComplete;
-            statusBanner.style.backgroundColor = '#d4edda';
-            statusBanner.style.color = '#155724';
+            console.debug('PWA: Service Worker cache is complete');
           }
         });
       } else {
-        statusBanner.setAttribute('data-state', 'swNotSupported');
-        statusBanner.textContent = translations[initialLang].swNotSupported;
+        console.debug('PWA: Service Worker is not supported in this browser');
       }
     });
   </script>
