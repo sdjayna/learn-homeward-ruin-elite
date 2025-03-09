@@ -42,9 +42,10 @@ self.addEventListener('install', event => {
             });
         });
         
-        // Detect user's preferred language
+        // Detect user's preferred language from browser settings
         const userLang = self.navigator?.language?.split('-')[0] || 'en';
         const langToCache = ['en', 'fr', 'es'].includes(userLang) ? userLang : 'en';
+        console.log('[Service Worker] Detected browser language:', userLang, '→ Caching resources for:', langToCache);
         
         // Cache language-specific resources
         if (languageResources[langToCache] && languageResources[langToCache].length > 0) {

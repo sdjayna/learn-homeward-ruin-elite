@@ -91,13 +91,22 @@
     
     // Get user's preferred language or use stored preference
     function getPreferredLanguage() {
+      // First check if there's a stored preference
       const storedLang = localStorage.getItem('preferredLanguage');
       if (storedLang && ['en', 'fr', 'es'].includes(storedLang)) {
+        console.log('Using stored language preference:', storedLang);
         return storedLang;
       }
       
+      // Then check browser language
       const browserLang = navigator.language.split('-')[0];
-      return ['en', 'fr', 'es'].includes(browserLang) ? browserLang : 'en';
+      const detectedLang = ['en', 'fr', 'es'].includes(browserLang) ? browserLang : 'en';
+      console.log('Detected browser language:', browserLang, '→ Using:', detectedLang);
+      
+      // Store this as the initial preference
+      localStorage.setItem('preferredLanguage', detectedLang);
+      
+      return detectedLang;
     }
     
     // Change language function
@@ -131,10 +140,18 @@
       const statusBanner = document.getElementById('pwa-status');
       statusBanner.style.display = 'block';
       
-      // Set initial language
+      // Set initial language based on browser settings
       const initialLang = getPreferredLanguage();
       document.getElementById('language').value = initialLang;
       document.getElementById('html-root').setAttribute('lang', initialLang);
+      
+      // Notify that language has been set
+      console.log('Initial language set to:', initialLang);
+      
+      // Dispatch language change event for Angular components
+      window.dispatchEvent(new CustomEvent('languageChanged', { 
+        detail: { language: initialLang, source: 'initialization' } 
+      }));
       
       // Check if service worker is supported
       if ('serviceWorker' in navigator) {
