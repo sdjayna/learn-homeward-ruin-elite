@@ -15,7 +15,12 @@ if [ $? -ne 0 ]; then
 fi
 
 echo -e "${YELLOW}Deploying to Cloudflare Pages...${NC}"
-npx wrangler pages deploy dist/learn-homeward-ruin-elite/browser --project-name=learn-homeward-ruin-elite
+# Use --commit-dirty=true to avoid warnings about uncommitted changes
+# Use --no-bundle to ensure we're not using Workers
+npx wrangler pages deploy dist/learn-homeward-ruin-elite/browser \
+  --project-name=learn-homeward-ruin-elite \
+  --commit-dirty=true \
+  --no-bundle
 
 if [ $? -ne 0 ]; then
   echo -e "${RED}Deployment failed.${NC}"
@@ -23,5 +28,17 @@ if [ $? -ne 0 ]; then
 fi
 
 echo -e "${GREEN}Deployment complete!${NC}"
-echo -e "${YELLOW}Tailing logs...${NC}"
-npx wrangler pages deployment tail --project-name=learn-homeward-ruin-elite
+echo -e "${YELLOW}Getting deployment URL...${NC}"
+
+# Get the deployment URL from the output
+DEPLOYMENT_URL=$(npx wrangler pages deployment list --project-name=learn-homeward-ruin-elite | grep -m 1 "https://" | awk '{print $2}')
+
+if [ -n "$DEPLOYMENT_URL" ]; then
+  echo -e "${GREEN}Your site is deployed at: ${YELLOW}$DEPLOYMENT_URL${NC}"
+  echo -e "${YELLOW}Opening in browser...${NC}"
+  open "$DEPLOYMENT_URL"
+else
+  echo -e "${RED}Could not determine deployment URL.${NC}"
+  echo -e "${YELLOW}Check your deployments with:${NC}"
+  echo -e "npx wrangler pages deployment list --project-name=learn-homeward-ruin-elite"
+fi
