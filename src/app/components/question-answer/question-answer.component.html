@@ -30,7 +30,7 @@
         <h3>Incorrect</h3>
         <p *ngIf="selectedAnswer.explanation">{{ selectedAnswer.explanation }}</p>
         <p *ngIf="!selectedAnswer.explanation">The correct answer was: 
-          {{ question.answers.find(a => a.isCorrect)?.text }}
+          {{ question?.answers?.find(a => a.isCorrect)?.text }}
         </p>
       </div>
     </div>

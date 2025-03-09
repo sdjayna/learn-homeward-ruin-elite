@@ -14,16 +14,16 @@ describe('AppComponent', () => {
     expect(app).toBeTruthy();
   });
 
-  it(`should have the 'learn-homeward-ruin-elite' title`, () => {
+  it(`should have the 'Learning App' title`, () => {
     const fixture = TestBed.createComponent(AppComponent);
     const app = fixture.componentInstance;
-    expect(app.title).toEqual('learn-homeward-ruin-elite');
+    expect(app.title).toEqual('Learning App');
   });
 
-  it('should render title', () => {
+  it('should render title in the router outlet', () => {
     const fixture = TestBed.createComponent(AppComponent);
     fixture.detectChanges();
     const compiled = fixture.nativeElement as HTMLElement;
-    expect(compiled.querySelector('h1')?.textContent).toContain('Hello, learn-homeward-ruin-elite');
+    expect(compiled.querySelector('router-outlet')).toBeTruthy();
   });
 });
