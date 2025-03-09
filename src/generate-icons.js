@@ -1,6 +1,11 @@
-const fs = require('fs');
-const path = require('path');
-const sharp = require('sharp');
+import fs from 'fs';
+import path from 'path';
+import { fileURLToPath } from 'url';
+import sharp from 'sharp';
+
+// Get the directory name properly in ES modules
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
 
 // Ensure directories exist
 const iconDir = path.join(__dirname, 'assets', 'icons');

@@ -4,12 +4,13 @@
   "scripts": {
     "ng": "ng",
     "start": "ng serve",
-    "prebuild": "node src/pre-build.js",
+    "prebuild": "node --no-warnings src/pre-build.js",
     "build": "ng build",
     "watch": "ng build --watch --configuration development",
     "test": "ng test",
     "serve:ssr:learn-homeward-ruin-elite": "node dist/learn-homeward-ruin-elite/server/server.mjs"
   },
+  "type": "module",
   "private": true,
   "dependencies": {
     "@angular/animations": "^19.1.0",

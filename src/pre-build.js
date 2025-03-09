@@ -1,7 +1,12 @@
-const { execSync } = require('child_process');
-const fs = require('fs');
-const path = require('path');
-const sharp = require('sharp');
+import { execSync } from 'child_process';
+import fs from 'fs';
+import path from 'path';
+import { fileURLToPath } from 'url';
+import sharp from 'sharp';
+
+// Get the directory name properly in ES modules
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
 
 // Define paths for source images
 const assetsDir = path.join(__dirname, 'assets');
@@ -104,7 +109,7 @@ if (generatedPlaceholders) {
 // Run the icon generation script
 console.log('Generating PWA icons and splash screens...');
 try {
-  execSync('node src/generate-icons.js', { stdio: 'inherit' });
+  execSync('node --no-warnings src/generate-icons.js', { stdio: 'inherit' });
   console.log('\x1b[32m%s\x1b[0m', 'PWA assets generated successfully!');
 } catch (error) {
   console.error('\x1b[31m%s\x1b[0m', 'Error generating PWA assets:');
