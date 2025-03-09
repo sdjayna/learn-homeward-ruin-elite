@@ -1,5 +1,6 @@
 import { Injectable } from '@angular/core';
-import { FSRS, Parameters, Card, Rating, SchedulingInfo } from 'ts-fsrs';
+import { FSRS, Card, Rating } from 'ts-fsrs';
+import { IParameters } from 'ts-fsrs/dist/fsrs';
 import { StudyItem, UserProgress } from '../models/spaced-repetition.model';
 import { Question } from '../models/question.model';
 import { BehaviorSubject, Observable } from 'rxjs';
@@ -13,7 +14,7 @@ export class SpacedRepetitionService {
   
   constructor() {
     // Initialize FSRS with default parameters
-    const params: Parameters = {
+    const params: IParameters = {
       request_retention: 0.9,
       maximum_interval: 36500,
       w: [0.4, 0.6, 2.4, 5.8, 4.93, 0.94, 0.86, 0.01, 1.49, 0.14, 0.94, 2.18, 0.05, 0.34, 1.26, 0.29, 2.61],
@@ -41,7 +42,7 @@ export class SpacedRepetitionService {
     const progress = this.userProgressSubject.value;
     if (progress && !progress.studyItems[question.id]) {
       // Create a new card for FSRS
-      const card = new Card();
+      const card = {} as Card;
       
       progress.studyItems[question.id] = {
         questionId: question.id,
@@ -74,13 +75,13 @@ export class SpacedRepetitionService {
     
     // Get scheduling info from FSRS
     const now = new Date();
-    const schedulingInfo = this.fsrs.repeat(studyItem.card, rating, now);
+    const schedulingInfo = this.fsrs.repeat(studyItem.card, rating);
     
     // Update study item with new scheduling info
     studyItem.lastReviewed = now;
-    studyItem.nextReview = schedulingInfo.due;
+    studyItem.nextReview = new Date(now.getTime() + schedulingInfo.scheduledDays * 24 * 60 * 60 * 1000);
     studyItem.schedulingInfo = schedulingInfo;
-    studyItem.card = schedulingInfo.card;
+    studyItem.card = schedulingInfo.card as Card;
     
     // Save progress
     this.userProgressSubject.next(progress);
@@ -134,7 +135,7 @@ export class SpacedRepetitionService {
           }
           
           // Recreate Card objects
-          item.card = Object.assign(new Card(), item.card);
+          item.card = item.card as Card;
         });
         
         progress.sessions.forEach(session => {

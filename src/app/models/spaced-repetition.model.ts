@@ -1,11 +1,12 @@
-import { Card, Rating, SchedulingInfo } from 'ts-fsrs';
+import { Card, Rating } from 'ts-fsrs';
+import { IPreview } from 'ts-fsrs/dist/fsrs';
 
 export interface StudyItem {
   questionId: string;
   card: Card;
   lastReviewed?: Date;
   nextReview?: Date;
-  schedulingInfo?: SchedulingInfo;
+  schedulingInfo?: IPreview;
   correctCount: number;
   incorrectCount: number;
 }

@@ -29,8 +29,8 @@
       <div *ngIf="!selectedAnswer.isCorrect" class="incorrect-feedback">
         <h3>Incorrect</h3>
         <p *ngIf="selectedAnswer.explanation">{{ selectedAnswer.explanation }}</p>
-        <p *ngIf="!selectedAnswer.explanation">The correct answer was: 
-          {{ question?.answers?.find(a => a.isCorrect)?.text }}
+        <p *ngIf="!selectedAnswer.explanation">
+          The correct answer was: {{ getCorrectAnswerText() }}
         </p>
       </div>
     </div>

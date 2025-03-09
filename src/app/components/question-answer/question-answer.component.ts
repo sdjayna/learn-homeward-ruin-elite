@@ -58,4 +58,10 @@ export class QuestionAnswerComponent implements OnInit {
     audio.load();
     audio.play().catch(error => console.error('Error playing sound:', error));
   }
+  
+  getCorrectAnswerText(): string {
+    if (!this.question || !this.question.answers) return '';
+    const correctAnswer = this.question.answers.find(a => a.isCorrect);
+    return correctAnswer ? correctAnswer.text : '';
+  }
 }
