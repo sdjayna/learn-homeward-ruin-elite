@@ -23,9 +23,8 @@ export class HomeComponent implements OnInit {
       if (progress?.targetExamDate) {
         this.targetExamDate = progress.targetExamDate.toISOString().split('T')[0];
       } else {
-        // Set default target date to 3 months from now
-        const defaultDate = new Date();
-        defaultDate.setMonth(defaultDate.getMonth() + 3);
+        // Set default target date to September 13th, 2025
+        const defaultDate = new Date('2025-09-13');
         this.targetExamDate = defaultDate.toISOString().split('T')[0];
       }
     });
