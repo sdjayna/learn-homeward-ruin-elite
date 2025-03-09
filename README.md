@@ -51,6 +51,8 @@ ng build
 
 This will create a production build in the `dist/` directory. By default, the production build optimizes your application for performance and speed.
 
+The build process automatically runs the icon and splash screen generation script if the source images (`src/assets/source-icon.png` and `src/assets/source-splash.png`) are present. If these files are missing, the build will continue but will display a warning.
+
 ## Deployment
 
 Deploy the application to Cloudflare Pages:
