@@ -249,21 +249,21 @@ if (!fs.existsSync(sourceIconPath) || !fs.existsSync(sourceSplashPath)) {
   console.log(`\n${colors.brightYellow}⚠ Warning:${colors.reset} Continuing build process despite missing source files`);
 }
 
-// Run the icon generation script
-console.log(`\n${colors.cyan}Generating PWA icons and splash screens...${colors.reset}`);
+// Run the icon and screenshot generation script
+console.log(`\n${colors.cyan}Generating PWA icons, splash screens, and screenshots...${colors.reset}`);
 try {
-  console.log(`${colors.yellow}Executing:${colors.reset} node --no-warnings src/generate-icons.js`);
-  
-  // Check if generate-icons.js exists
-  const generateIconsPath = path.join(__dirname, 'generate-icons.js');
+  console.log(`${colors.yellow}Executing:${colors.reset} node --no-warnings src/generate-icons-and-screenshots.js`);
+    
+  // Check if generate-icons-and-screenshots.js exists
+  const generateIconsPath = path.join(__dirname, 'generate-icons-and-screenshots.js');
   if (!fs.existsSync(generateIconsPath)) {
-    console.error(`${colors.red}✗ Error:${colors.reset} generate-icons.js not found at ${generateIconsPath}`);
-    throw new Error('generate-icons.js script not found');
+    console.error(`${colors.red}✗ Error:${colors.reset} generate-icons-and-screenshots.js not found at ${generateIconsPath}`);
+    throw new Error('generate-icons-and-screenshots.js script not found');
   }
-  
+    
   // Execute the script with detailed error handling
   try {
-    execSync('node --no-warnings src/generate-icons.js', { stdio: 'inherit' });
+    execSync('node --no-warnings src/generate-icons-and-screenshots.js', { stdio: 'inherit' });
     console.log(`\n${colors.green}✓ PWA assets generated successfully!${colors.reset}`);
   } catch (execError) {
     throw new Error(`Script execution failed: ${execError.message}`);
@@ -272,10 +272,10 @@ try {
   console.error(`\n${colors.brightRed}✗ Error generating PWA assets:${colors.reset}`);
   console.error(`${colors.red}${error.message}${colors.reset}`);
   console.error(`\n${colors.yellow}Troubleshooting:${colors.reset}`);
-  console.error(`1. Check if src/generate-icons.js exists`);
+  console.error(`1. Check if src/generate-icons-and-screenshots.js exists`);
   console.error(`2. Verify the 'sharp' package is installed: npm install sharp`);
   console.error(`3. Check file permissions in the assets directory`);
-  console.error(`4. Try running the script manually: node --no-warnings src/generate-icons.js`);
+  console.error(`4. Try running the script manually: node --no-warnings src/generate-icons-and-screenshots.js`);
   // Don't exit with error to allow build to continue even if asset generation fails
 }
 
