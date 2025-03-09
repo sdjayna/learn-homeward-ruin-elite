@@ -26,7 +26,7 @@
         <input 
           type="checkbox" 
           id="dark-mode-toggle" 
-          [checked]="isDarkMode" 
+          [(ngModel)]="isDarkMode" 
           (change)="toggleDarkMode()">
         <span class="toggle-slider"></span>
       </div>

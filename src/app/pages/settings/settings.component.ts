@@ -79,7 +79,7 @@ export class SettingsComponent implements OnInit {
   }
   
   toggleDarkMode(): void {
-    this.isDarkMode = !this.isDarkMode;
+    // isDarkMode is already updated by the [(ngModel)] binding
     localStorage.setItem('darkMode', this.isDarkMode.toString());
     
     // Apply dark mode to the document
@@ -99,5 +99,7 @@ export class SettingsComponent implements OnInit {
     window.dispatchEvent(new CustomEvent('themeChange', { 
       detail: { darkMode: this.isDarkMode } 
     }));
+    
+    console.log('Dark mode toggled:', this.isDarkMode);
   }
 }
