@@ -52,6 +52,10 @@ for (const dir of dirsToCheck) {
 const iconSizes = [72, 96, 128, 144, 152, 192, 384, 512];
 
 // Define splash screen sizes for different devices
+// Splash screens are displayed when a PWA is launched from the home screen
+// They provide a branded loading experience while the app initializes
+// These are referenced in the manifest.webmanifest and used by iOS/iPadOS devices
+// For Android, the splash screen is generated from the manifest theme_color and icons
 const splashScreens = [
   { width: 640, height: 1136, name: 'splash-640x1136.png', device: 'iPhone 5/SE' },
   { width: 750, height: 1334, name: 'splash-750x1334.png', device: 'iPhone 6/7/8' },
@@ -186,6 +190,8 @@ async function generateIcons() {
 }
 
 // Generate splash screens
+// These are used by iOS/iPadOS when launching the PWA from the home screen
+// They provide a branded loading experience instead of a white screen
 async function generateSplashScreens() {
   console.log(`\n${colors.cyan}Generating splash screens...${colors.reset}`);
   let successCount = 0;
