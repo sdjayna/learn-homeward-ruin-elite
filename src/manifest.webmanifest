@@ -56,51 +56,69 @@
       "purpose": "maskable any"
     }
   ],
-  "splash_screens": [
+  "screenshots": [
     {
       "src": "assets/splash/splash-640x1136.png",
       "sizes": "640x1136",
-      "type": "image/png"
+      "type": "image/png",
+      "form_factor": "narrow",
+      "label": "iPhone 5 Splash Screen"
     },
     {
       "src": "assets/splash/splash-750x1334.png",
       "sizes": "750x1334",
-      "type": "image/png"
+      "type": "image/png",
+      "form_factor": "narrow",
+      "label": "iPhone 6/7/8 Splash Screen"
     },
     {
       "src": "assets/splash/splash-828x1792.png",
       "sizes": "828x1792",
-      "type": "image/png"
+      "type": "image/png",
+      "form_factor": "narrow",
+      "label": "iPhone XR Splash Screen"
     },
     {
       "src": "assets/splash/splash-1125x2436.png",
       "sizes": "1125x2436",
-      "type": "image/png"
+      "type": "image/png",
+      "form_factor": "narrow",
+      "label": "iPhone X/XS Splash Screen"
     },
     {
       "src": "assets/splash/splash-1242x2688.png",
       "sizes": "1242x2688",
-      "type": "image/png"
+      "type": "image/png",
+      "form_factor": "narrow",
+      "label": "iPhone XS Max Splash Screen"
     },
     {
       "src": "assets/splash/splash-1536x2048.png",
       "sizes": "1536x2048",
-      "type": "image/png"
+      "type": "image/png",
+      "form_factor": "wide",
+      "label": "iPad Mini/Air Splash Screen"
     },
     {
       "src": "assets/splash/splash-1668x2224.png",
       "sizes": "1668x2224",
-      "type": "image/png"
+      "type": "image/png",
+      "form_factor": "wide",
+      "label": "iPad Pro 10.5\" Splash Screen"
     },
     {
       "src": "assets/splash/splash-1668x2388.png",
       "sizes": "1668x2388",
-      "type": "image/png"
+      "type": "image/png",
+      "form_factor": "wide",
+      "label": "iPad Pro 11\" Splash Screen"
     },
     {
       "src": "assets/splash/splash-2048x2732.png",
       "sizes": "2048x2732",
-      "type": "image/png"
+      "type": "image/png",
+      "form_factor": "wide",
+      "label": "iPad Pro 12.9\" Splash Screen"
     }
   ]
 }
