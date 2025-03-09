@@ -26,14 +26,15 @@ const assetsDir = path.join(__dirname, 'assets');
 const iconDir = path.join(assetsDir, 'icons');
 const splashDir = path.join(assetsDir, 'splash');
 const screenshotsDir = path.join(assetsDir, 'screenshots');
-const sourceIconPath = path.join(assetsDir, 'source-icon.png');
-const sourceSplashPath = path.join(assetsDir, 'source-splash.png');
-const sourceNarrowScreenshotPath = path.join(assetsDir, 'source-narrow-screenshot.png');
-const sourceWideScreenshotPath = path.join(assetsDir, 'source-wide-screenshot.png');
+const sourceDir = path.join(assetsDir, 'source');
+const sourceIconPath = path.join(sourceDir, 'icon.png');
+const sourceSplashPath = path.join(sourceDir, 'splash.png');
+const sourceNarrowScreenshotPath = path.join(sourceDir, 'narrow-screenshot.png');
+const sourceWideScreenshotPath = path.join(sourceDir, 'wide-screenshot.png');
 const manifestPath = path.join(__dirname, 'manifest.webmanifest');
 
 // Ensure directories exist
-const dirsToCheck = [assetsDir, iconDir, splashDir];
+const dirsToCheck = [assetsDir, iconDir, splashDir, sourceDir, screenshotsDir];
 for (const dir of dirsToCheck) {
   if (!fs.existsSync(dir)) {
     try {
