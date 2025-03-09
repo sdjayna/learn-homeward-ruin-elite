@@ -24,6 +24,18 @@ export class AppComponent implements OnInit {
     // Set the document title
     document.title = this.title;
     
+    // Apply dark mode if enabled
+    const darkMode = localStorage.getItem('darkMode') === 'true';
+    if (darkMode) {
+      document.documentElement.classList.add('dark-theme');
+      
+      // Update theme-color meta tag for PWA
+      const metaThemeColor = document.getElementById('theme-color-meta');
+      if (metaThemeColor) {
+        metaThemeColor.setAttribute('content', '#121212');
+      }
+    }
+    
     // Listen for language changes
     window.addEventListener('languageChange', (e: any) => {
       if (e.detail && e.detail.language) {

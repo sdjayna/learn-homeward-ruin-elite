@@ -1,3 +1,36 @@
+/* Theme Variables */
+:root {
+  --bg-color: #f9f9f9;
+  --bg-secondary-color: #f5f5f5;
+  --text-color: #333333;
+  --text-secondary-color: #666666;
+  --border-color: #dddddd;
+  --primary-color: #4a6da7;
+  --primary-hover-color: #3a5d97;
+  --card-bg-color: #ffffff;
+  --card-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  --input-bg-color: #ffffff;
+  --error-color: #d9534f;
+  --success-color: #5cb85c;
+  --warning-color: #f0ad4e;
+}
+
+.dark-theme {
+  --bg-color: #121212;
+  --bg-secondary-color: #1e1e1e;
+  --text-color: #e0e0e0;
+  --text-secondary-color: #aaaaaa;
+  --border-color: #444444;
+  --primary-color: #5d82c1;
+  --primary-hover-color: #6e93d2;
+  --card-bg-color: #1e1e1e;
+  --card-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+  --input-bg-color: #2d2d2d;
+  --error-color: #e57373;
+  --success-color: #81c784;
+  --warning-color: #ffb74d;
+}
+
 /* Global styles */
 * {
   box-sizing: border-box;
@@ -8,17 +41,19 @@
 body {
   font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
   line-height: 1.6;
-  color: #333;
-  background-color: #f9f9f9;
+  color: var(--text-color);
+  background-color: var(--bg-color);
+  transition: background-color 0.3s ease, color 0.3s ease;
 }
 
 h1, h2, h3, h4, h5, h6 {
   margin-bottom: 0.5rem;
   line-height: 1.2;
+  color: var(--text-color);
 }
 
 a {
-  color: #4a6da7;
+  color: var(--primary-color);
   text-decoration: none;
 }
 
@@ -48,3 +83,55 @@ button {
 .mb-3 { margin-bottom: 1rem; }
 .mb-4 { margin-bottom: 1.5rem; }
 .mb-5 { margin-bottom: 3rem; }
+
+/* Theme-specific component styles */
+.settings-section, .subject-card, .topic-content, .question-pane, .answer-pane, 
+.overall-progress, .topic-progress, .topic-card, .no-progress {
+  background-color: var(--card-bg-color);
+  box-shadow: var(--card-shadow);
+}
+
+input, select, button {
+  background-color: var(--input-bg-color);
+  color: var(--text-color);
+  border-color: var(--border-color);
+}
+
+.primary-button {
+  background-color: var(--primary-color);
+  color: white;
+}
+.primary-button:hover {
+  background-color: var(--primary-hover-color);
+}
+
+.secondary-button {
+  background-color: var(--bg-secondary-color);
+  color: var(--text-color);
+}
+
+.desktop-nav, .mobile-nav {
+  background-color: var(--card-bg-color);
+  box-shadow: var(--card-shadow);
+}
+
+.mobile-nav a, .desktop-nav a {
+  color: var(--text-secondary-color);
+}
+.mobile-nav a.active, .desktop-nav a.active {
+  color: var(--primary-color);
+}
+
+.subject-name, .topic-hint, .settings-info, .app-footer {
+  color: var(--text-secondary-color);
+}
+
+.mastery-bar.mastery-low {
+  background-color: var(--error-color);
+}
+.mastery-bar.mastery-medium {
+  background-color: var(--warning-color);
+}
+.mastery-bar.mastery-high {
+  background-color: var(--success-color);
+}

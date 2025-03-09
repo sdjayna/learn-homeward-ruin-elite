@@ -53,7 +53,7 @@
   }
 }
 
-.language-selector, .date-picker {
+.language-selector, .date-picker, .theme-toggle {
   display: grid;
   grid-template-rows: auto auto;
   gap: 0.5rem;
@@ -66,14 +66,64 @@
   select, input {
     padding: 0.75rem;
     font-size: 1rem;
-    border: 1px solid #ddd;
+    border: 1px solid var(--border-color);
     border-radius: 4px;
-    background-color: white;
+    background-color: var(--input-bg-color);
+    color: var(--text-color);
     max-width: 300px;
     
     &:focus {
-      outline: 2px solid #4a6da7;
-      border-color: #4a6da7;
+      outline: 2px solid var(--primary-color);
+      border-color: var(--primary-color);
+    }
+  }
+}
+
+.toggle-switch {
+  position: relative;
+  display: inline-block;
+  width: 60px;
+  height: 34px;
+  
+  input {
+    opacity: 0;
+    width: 0;
+    height: 0;
+    
+    &:checked + .toggle-slider {
+      background-color: var(--primary-color);
+    }
+    
+    &:checked + .toggle-slider:before {
+      transform: translateX(26px);
+    }
+    
+    &:focus + .toggle-slider {
+      box-shadow: 0 0 1px var(--primary-color);
+    }
+  }
+  
+  .toggle-slider {
+    position: absolute;
+    cursor: pointer;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: #ccc;
+    transition: .4s;
+    border-radius: 34px;
+    
+    &:before {
+      position: absolute;
+      content: "";
+      height: 26px;
+      width: 26px;
+      left: 4px;
+      bottom: 4px;
+      background-color: white;
+      transition: .4s;
+      border-radius: 50%;
     }
   }
 }

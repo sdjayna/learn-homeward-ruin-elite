@@ -87,7 +87,7 @@ export interface TranslationStructure {
     languageSettings: string;
     selectLanguage: string;
     appearance: string;
-    appearanceComingSoon: string;
+    darkMode: string;
     notifications: string;
     notificationsComingSoon: string;
     examDate: string;
@@ -194,7 +194,7 @@ export const translations: Record<SupportedLanguages, TranslationStructure> = {
       languageSettings: "Language Settings",
       selectLanguage: "Select your preferred language:",
       appearance: "Appearance",
-      appearanceComingSoon: "More appearance settings coming soon.",
+      darkMode: "Dark Mode",
       notifications: "Notifications",
       notificationsComingSoon: "Notification settings coming soon.",
       examDate: "Target Exam Date",
@@ -299,7 +299,7 @@ export const translations: Record<SupportedLanguages, TranslationStructure> = {
       languageSettings: "Configuración de Idioma",
       selectLanguage: "Selecciona tu idioma preferido:",
       appearance: "Apariencia",
-      appearanceComingSoon: "Más configuraciones de apariencia próximamente.",
+      darkMode: "Modo Oscuro",
       notifications: "Notificaciones",
       notificationsComingSoon: "Configuración de notificaciones próximamente.",
       examDate: "Fecha del Examen",
@@ -404,7 +404,7 @@ export const translations: Record<SupportedLanguages, TranslationStructure> = {
       languageSettings: "Paramètres de Langue",
       selectLanguage: "Sélectionnez votre langue préférée :",
       appearance: "Apparence",
-      appearanceComingSoon: "Plus de paramètres d'apparence à venir.",
+      darkMode: "Mode Sombre",
       notifications: "Notifications",
       notificationsComingSoon: "Paramètres de notifications à venir.",
       examDate: "Date d'Examen Cible",

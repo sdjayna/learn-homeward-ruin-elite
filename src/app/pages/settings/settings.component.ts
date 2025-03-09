@@ -17,6 +17,7 @@ export class SettingsComponent implements OnInit {
   appTitle = '';
   translations!: TranslationStructure;
   targetExamDate: string = '';
+  isDarkMode: boolean = false;
   
   constructor(private spacedRepetitionService: SpacedRepetitionService) { }
   
@@ -26,6 +27,9 @@ export class SettingsComponent implements OnInit {
     if (storedLang && ['en', 'fr', 'es'].includes(storedLang)) {
       this.selectedLanguage = storedLang;
     }
+    
+    // Get dark mode preference
+    this.isDarkMode = localStorage.getItem('darkMode') === 'true';
     
     this.updateTranslations(this.selectedLanguage);
     
@@ -72,5 +76,28 @@ export class SettingsComponent implements OnInit {
     if (this.targetExamDate) {
       this.spacedRepetitionService.setTargetExamDate(new Date(this.targetExamDate));
     }
+  }
+  
+  toggleDarkMode(): void {
+    this.isDarkMode = !this.isDarkMode;
+    localStorage.setItem('darkMode', this.isDarkMode.toString());
+    
+    // Apply dark mode to the document
+    if (this.isDarkMode) {
+      document.documentElement.classList.add('dark-theme');
+    } else {
+      document.documentElement.classList.remove('dark-theme');
+    }
+    
+    // Update theme-color meta tag for PWA
+    const metaThemeColor = document.getElementById('theme-color-meta');
+    if (metaThemeColor) {
+      metaThemeColor.setAttribute('content', this.isDarkMode ? '#121212' : '#1976d2');
+    }
+    
+    // Dispatch event for other components
+    window.dispatchEvent(new CustomEvent('themeChange', { 
+      detail: { darkMode: this.isDarkMode } 
+    }));
   }
 }
