@@ -77,6 +77,20 @@ function checkSourceFiles() {
       minSize: 2732, 
       recommendedSize: '2732x2732',
       description: 'Used to generate all splash screens'
+    },
+    {
+      path: sourceNarrowScreenshotPath,
+      name: 'Narrow Screenshot',
+      minSize: 750,
+      recommendedSize: '750x1334',
+      description: 'Used for narrow (mobile) screenshots'
+    },
+    {
+      path: sourceWideScreenshotPath,
+      name: 'Wide Screenshot',
+      minSize: 1920,
+      recommendedSize: '1920x1080',
+      description: 'Used for wide (desktop) screenshots'
     }
   ];
   

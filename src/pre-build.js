@@ -27,8 +27,11 @@ const __dirname = path.dirname(__filename);
 const assetsDir = path.join(__dirname, 'assets');
 const iconDir = path.join(assetsDir, 'icons');
 const splashDir = path.join(assetsDir, 'splash');
+const screenshotsDir = path.join(assetsDir, 'screenshots');
 const sourceIconPath = path.join(assetsDir, 'source-icon.png');
 const sourceSplashPath = path.join(assetsDir, 'source-splash.png');
+const sourceNarrowScreenshotPath = path.join(assetsDir, 'source-narrow-screenshot.png');
+const sourceWideScreenshotPath = path.join(assetsDir, 'source-wide-screenshot.png');
 
 console.log(`${colors.cyan}PWA Asset Generator - Pre-build${colors.reset}`);
 console.log(`${colors.cyan}=============================${colors.reset}`);
@@ -66,6 +69,20 @@ function checkSourceFiles() {
       minSize: 2732, 
       recommendedSize: '2732x2732',
       description: 'Used to generate all splash screens' 
+    },
+    {
+      path: sourceNarrowScreenshotPath,
+      name: 'Narrow Screenshot',
+      minSize: 750,
+      recommendedSize: '750x1334',
+      description: 'Used for narrow (mobile) screenshots'
+    },
+    {
+      path: sourceWideScreenshotPath,
+      name: 'Wide Screenshot',
+      minSize: 1920,
+      recommendedSize: '1920x1080',
+      description: 'Used for wide (desktop) screenshots'
     }
   ];
   
@@ -216,6 +233,181 @@ async function generatePlaceholderImages() {
       console.error(`  3. Try creating the file manually`);
     }
   }
+  
+  // Create a narrow screenshot placeholder if it doesn't exist
+  if (!fs.existsSync(sourceNarrowScreenshotPath)) {
+    console.log(`${colors.yellow}Generating placeholder narrow screenshot at:${colors.reset} ${sourceNarrowScreenshotPath}`);
+    
+    try {
+      // Create a 750x1334 mobile screenshot placeholder (iPhone 6/7/8 dimensions)
+      await sharp({
+        create: {
+          width: 750,
+          height: 1334,
+          channels: 4,
+          background: { r: 245, g: 245, b: 245, alpha: 1 } // #f5f5f5 (light gray)
+        }
+      })
+      .composite([{
+        input: Buffer.from(`<svg width="750" height="1334">
+          <defs>
+            <linearGradient id="headerGrad" x1="0%" y1="0%" x2="100%" y2="0%">
+              <stop offset="0%" style="stop-color:#1976d2;stop-opacity:1" />
+              <stop offset="100%" style="stop-color:#1565c0;stop-opacity:1" />
+            </linearGradient>
+            <filter id="shadow" x="-20%" y="-20%" width="140%" height="140%">
+              <feDropShadow dx="0" dy="2" stdDeviation="4" flood-color="black" flood-opacity="0.2" />
+            </filter>
+          </defs>
+          <!-- Header -->
+          <rect width="750" height="120" fill="url(#headerGrad)" />
+          <text x="375" y="75" font-family="Arial" font-size="36" fill="white" text-anchor="middle" dominant-baseline="middle">11+ Learning</text>
+          
+          <!-- Content -->
+          <rect x="40" y="160" width="670" height="200" rx="10" ry="10" fill="white" filter="url(#shadow)" />
+          <text x="375" y="220" font-family="Arial" font-size="32" fill="#333333" text-anchor="middle" dominant-baseline="middle">Mathematics</text>
+          <text x="375" y="280" font-family="Arial" font-size="24" fill="#666666" text-anchor="middle" dominant-baseline="middle">Practice number operations and more</text>
+          
+          <rect x="40" y="400" width="670" height="200" rx="10" ry="10" fill="white" filter="url(#shadow)" />
+          <text x="375" y="460" font-family="Arial" font-size="32" fill="#333333" text-anchor="middle" dominant-baseline="middle">English</text>
+          <text x="375" y="520" font-family="Arial" font-size="24" fill="#666666" text-anchor="middle" dominant-baseline="middle">Vocabulary, comprehension, and grammar</text>
+          
+          <rect x="40" y="640" width="670" height="200" rx="10" ry="10" fill="white" filter="url(#shadow)" />
+          <text x="375" y="700" font-family="Arial" font-size="32" fill="#333333" text-anchor="middle" dominant-baseline="middle">Verbal Reasoning</text>
+          <text x="375" y="760" font-family="Arial" font-size="24" fill="#666666" text-anchor="middle" dominant-baseline="middle">Logic puzzles and word problems</text>
+          
+          <rect x="40" y="880" width="670" height="200" rx="10" ry="10" fill="white" filter="url(#shadow)" />
+          <text x="375" y="940" font-family="Arial" font-size="32" fill="#333333" text-anchor="middle" dominant-baseline="middle">Non-verbal Reasoning</text>
+          <text x="375" y="1000" font-family="Arial" font-size="24" fill="#666666" text-anchor="middle" dominant-baseline="middle">Pattern recognition and spatial awareness</text>
+          
+          <!-- Navigation -->
+          <rect y="1234" width="750" height="100" fill="#f5f5f5" />
+          <line x1="0" y1="1234" x2="750" y2="1234" stroke="#e0e0e0" stroke-width="2" />
+          <text x="125" y="1284" font-family="Arial" font-size="24" fill="#1976d2" text-anchor="middle" dominant-baseline="middle">Home</text>
+          <text x="375" y="1284" font-family="Arial" font-size="24" fill="#666666" text-anchor="middle" dominant-baseline="middle">Study</text>
+          <text x="625" y="1284" font-family="Arial" font-size="24" fill="#666666" text-anchor="middle" dominant-baseline="middle">Progress</text>
+        </svg>`),
+        top: 0,
+        left: 0
+      }])
+      .png()
+      .toFile(sourceNarrowScreenshotPath);
+      
+      // Verify the file was created
+      if (fs.existsSync(sourceNarrowScreenshotPath)) {
+        const stats = fs.statSync(sourceNarrowScreenshotPath);
+        console.log(`${colors.green}✓ Created placeholder narrow screenshot:${colors.reset} ${sourceNarrowScreenshotPath} (${(stats.size / 1024).toFixed(2)} KB)`);
+        generatedPlaceholders = true;
+      } else {
+        console.error(`${colors.red}✗ Failed to create placeholder narrow screenshot:${colors.reset} File not found after creation attempt`);
+      }
+    } catch (error) {
+      console.error(`${colors.red}✗ Error creating placeholder narrow screenshot:${colors.reset} ${error.message}`);
+      console.error(`  ${colors.yellow}Troubleshooting:${colors.reset}`);
+      console.error(`  1. Check if the 'sharp' package is installed correctly: npm install sharp`);
+      console.error(`  2. Check file permissions in the assets directory`);
+    }
+  }
+  
+  // Create a wide screenshot placeholder if it doesn't exist
+  if (!fs.existsSync(sourceWideScreenshotPath)) {
+    console.log(`${colors.yellow}Generating placeholder wide screenshot at:${colors.reset} ${sourceWideScreenshotPath}`);
+    
+    try {
+      // Create a 1920x1080 desktop screenshot placeholder
+      await sharp({
+        create: {
+          width: 1920,
+          height: 1080,
+          channels: 4,
+          background: { r: 245, g: 245, b: 245, alpha: 1 } // #f5f5f5 (light gray)
+        }
+      })
+      .composite([{
+        input: Buffer.from(`<svg width="1920" height="1080">
+          <defs>
+            <linearGradient id="headerGrad" x1="0%" y1="0%" x2="100%" y2="0%">
+              <stop offset="0%" style="stop-color:#1976d2;stop-opacity:1" />
+              <stop offset="100%" style="stop-color:#1565c0;stop-opacity:1" />
+            </linearGradient>
+            <filter id="shadow" x="-20%" y="-20%" width="140%" height="140%">
+              <feDropShadow dx="0" dy="2" stdDeviation="4" flood-color="black" flood-opacity="0.2" />
+            </filter>
+          </defs>
+          <!-- Header -->
+          <rect width="1920" height="80" fill="url(#headerGrad)" />
+          <text x="200" y="50" font-family="Arial" font-size="32" fill="white" text-anchor="middle" dominant-baseline="middle">11+ Learning</text>
+          <text x="1600" y="50" font-family="Arial" font-size="24" fill="white" text-anchor="middle" dominant-baseline="middle">Home</text>
+          <text x="1700" y="50" font-family="Arial" font-size="24" fill="white" text-anchor="middle" dominant-baseline="middle">Study</text>
+          <text x="1800" y="50" font-family="Arial" font-size="24" fill="white" text-anchor="middle" dominant-baseline="middle">Progress</text>
+          
+          <!-- Content -->
+          <text x="960" y="150" font-family="Arial" font-size="48" fill="#333333" text-anchor="middle" dominant-baseline="middle">Welcome to 11+ Learning</text>
+          <text x="960" y="220" font-family="Arial" font-size="28" fill="#666666" text-anchor="middle" dominant-baseline="middle">Choose a subject to begin studying</text>
+          
+          <rect x="200" y="300" width="350" height="300" rx="10" ry="10" fill="white" filter="url(#shadow)" />
+          <text x="375" y="380" font-family="Arial" font-size="36" fill="#333333" text-anchor="middle" dominant-baseline="middle">Mathematics</text>
+          <text x="375" y="450" font-family="Arial" font-size="24" fill="#666666" text-anchor="middle" dominant-baseline="middle">Practice number operations</text>
+          <text x="375" y="490" font-family="Arial" font-size="24" fill="#666666" text-anchor="middle" dominant-baseline="middle">and more</text>
+          
+          <rect x="600" y="300" width="350" height="300" rx="10" ry="10" fill="white" filter="url(#shadow)" />
+          <text x="775" y="380" font-family="Arial" font-size="36" fill="#333333" text-anchor="middle" dominant-baseline="middle">English</text>
+          <text x="775" y="450" font-family="Arial" font-size="24" fill="#666666" text-anchor="middle" dominant-baseline="middle">Vocabulary, comprehension,</text>
+          <text x="775" y="490" font-family="Arial" font-size="24" fill="#666666" text-anchor="middle" dominant-baseline="middle">and grammar</text>
+          
+          <rect x="1000" y="300" width="350" height="300" rx="10" ry="10" fill="white" filter="url(#shadow)" />
+          <text x="1175" y="380" font-family="Arial" font-size="36" fill="#333333" text-anchor="middle" dominant-baseline="middle">Verbal Reasoning</text>
+          <text x="1175" y="450" font-family="Arial" font-size="24" fill="#666666" text-anchor="middle" dominant-baseline="middle">Logic puzzles and</text>
+          <text x="1175" y="490" font-family="Arial" font-size="24" fill="#666666" text-anchor="middle" dominant-baseline="middle">word problems</text>
+          
+          <rect x="1400" y="300" width="350" height="300" rx="10" ry="10" fill="white" filter="url(#shadow)" />
+          <text x="1575" y="380" font-family="Arial" font-size="36" fill="#333333" text-anchor="middle" dominant-baseline="middle">Non-verbal</text>
+          <text x="1575" y="430" font-family="Arial" font-size="36" fill="#333333" text-anchor="middle" dominant-baseline="middle">Reasoning</text>
+          <text x="1575" y="490" font-family="Arial" font-size="24" fill="#666666" text-anchor="middle" dominant-baseline="middle">Pattern recognition</text>
+          
+          <!-- Stats Section -->
+          <rect x="200" y="650" width="1550" height="300" rx="10" ry="10" fill="white" filter="url(#shadow)" />
+          <text x="960" y="720" font-family="Arial" font-size="36" fill="#333333" text-anchor="middle" dominant-baseline="middle">Your Progress</text>
+          
+          <rect x="300" y="780" width="300" height="30" rx="15" ry="15" fill="#e0e0e0" />
+          <rect x="300" y="780" width="210" height="30" rx="15" ry="15" fill="#4caf50" />
+          <text x="300" y="760" font-family="Arial" font-size="24" fill="#333333" text-anchor="start" dominant-baseline="middle">Mathematics: 70%</text>
+          
+          <rect x="700" y="780" width="300" height="30" rx="15" ry="15" fill="#e0e0e0" />
+          <rect x="700" y="780" width="150" height="30" rx="15" ry="15" fill="#2196f3" />
+          <text x="700" y="760" font-family="Arial" font-size="24" fill="#333333" text-anchor="start" dominant-baseline="middle">English: 50%</text>
+          
+          <rect x="1100" y="780" width="300" height="30" rx="15" ry="15" fill="#e0e0e0" />
+          <rect x="1100" y="780" width="90" height="30" rx="15" ry="15" fill="#ff9800" />
+          <text x="1100" y="760" font-family="Arial" font-size="24" fill="#333333" text-anchor="start" dominant-baseline="middle">Verbal Reasoning: 30%</text>
+          
+          <rect x="300" y="850" width="300" height="30" rx="15" ry="15" fill="#e0e0e0" />
+          <rect x="300" y="850" width="60" height="30" rx="15" ry="15" fill="#f44336" />
+          <text x="300" y="830" font-family="Arial" font-size="24" fill="#333333" text-anchor="start" dominant-baseline="middle">Non-verbal: 20%</text>
+          
+          <text x="700" y="850" font-family="Arial" font-size="28" fill="#1976d2" text-anchor="start" dominant-baseline="middle">Days until exam: 45</text>
+        </svg>`),
+        top: 0,
+        left: 0
+      }])
+      .png()
+      .toFile(sourceWideScreenshotPath);
+      
+      // Verify the file was created
+      if (fs.existsSync(sourceWideScreenshotPath)) {
+        const stats = fs.statSync(sourceWideScreenshotPath);
+        console.log(`${colors.green}✓ Created placeholder wide screenshot:${colors.reset} ${sourceWideScreenshotPath} (${(stats.size / 1024).toFixed(2)} KB)`);
+        generatedPlaceholders = true;
+      } else {
+        console.error(`${colors.red}✗ Failed to create placeholder wide screenshot:${colors.reset} File not found after creation attempt`);
+      }
+    } catch (error) {
+      console.error(`${colors.red}✗ Error creating placeholder wide screenshot:${colors.reset} ${error.message}`);
+      console.error(`  ${colors.yellow}Troubleshooting:${colors.reset}`);
+      console.error(`  1. Check if the 'sharp' package is installed correctly: npm install sharp`);
+      console.error(`  2. Check file permissions in the assets directory`);
+    }
+  }
 }
 
 // Check source files first
@@ -247,6 +439,18 @@ if (!fs.existsSync(sourceIconPath) || !fs.existsSync(sourceSplashPath)) {
   console.error(`${colors.yellow}Or check permissions on the directory.${colors.reset}`);
   // Continue anyway to allow build to proceed
   console.log(`\n${colors.brightYellow}⚠ Warning:${colors.reset} Continuing build process despite missing source files`);
+}
+
+// Warn about missing screenshot source files but don't block the build
+if (!fs.existsSync(sourceNarrowScreenshotPath) || !fs.existsSync(sourceWideScreenshotPath)) {
+  console.log(`\n${colors.brightYellow}⚠ Warning:${colors.reset} Some screenshot source files are missing:`);
+  if (!fs.existsSync(sourceNarrowScreenshotPath)) {
+    console.log(`  - ${sourceNarrowScreenshotPath} (750x1334 PNG recommended for mobile)`);
+  }
+  if (!fs.existsSync(sourceWideScreenshotPath)) {
+    console.log(`  - ${sourceWideScreenshotPath} (1920x1080 PNG recommended for desktop)`);
+  }
+  console.log(`${colors.yellow}Screenshots may not be generated correctly.${colors.reset}`);
 }
 
 // Run the icon and screenshot generation script
