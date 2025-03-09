@@ -1,11 +1,16 @@
 {
   "name": "Learn Homeward Ruin Elite",
   "short_name": "LHRE",
+  "description": "A Progressive Web Application built with Angular",
   "theme_color": "#1976d2",
   "background_color": "#fafafa",
   "display": "standalone",
+  "orientation": "any",
   "scope": "./",
-  "start_url": "./",
+  "start_url": "./?source=pwa",
+  "id": "/",
+  "categories": ["education", "productivity"],
+  "lang": "en-US",
   "icons": [
     {
       "src": "assets/icons/icon-72x72.png",
@@ -120,5 +125,16 @@
       "form_factor": "wide",
       "label": "iPad Pro 12.9\" Splash Screen"
     }
-  ]
+  ],
+  "shortcuts": [
+    {
+      "name": "Home",
+      "short_name": "Home",
+      "description": "Go to the home page",
+      "url": "./",
+      "icons": [{ "src": "assets/icons/icon-96x96.png", "sizes": "96x96" }]
+    }
+  ],
+  "related_applications": [],
+  "prefer_related_applications": false
 }
