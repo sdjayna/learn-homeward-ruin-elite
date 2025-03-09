@@ -1,0 +1,41 @@
+<div class="home-container">
+  <header class="home-header">
+    <h1>Learning App</h1>
+    <p>Master key subjects with spaced repetition learning</p>
+  </header>
+  
+  <section class="exam-date-section">
+    <h2>Target Exam Date</h2>
+    <div class="date-picker">
+      <input type="date" [(ngModel)]="targetExamDate" (change)="updateTargetDate()">
+    </div>
+    <p class="date-info">
+      Setting your exam date helps optimize your study schedule
+    </p>
+  </section>
+  
+  <section class="subjects-section">
+    <h2>Study Subjects</h2>
+    
+    <div class="subjects-grid">
+      <div *ngFor="let subject of subjects" class="subject-card" [routerLink]="['/subjects', subject.type]">
+        <div class="subject-icon">{{ getSubjectIcon(subject.type) }}</div>
+        <h3>{{ subject.name }}</h3>
+        <p>{{ subject.description }}</p>
+        <div class="topic-count">{{ subject.topics.length }} topics</div>
+      </div>
+    </div>
+  </section>
+  
+  <section class="quick-actions">
+    <h2>Quick Actions</h2>
+    <div class="actions-grid">
+      <button class="action-button" [routerLink]="['/study']">
+        Start Study Session
+      </button>
+      <button class="action-button" [routerLink]="['/progress']">
+        View Progress
+      </button>
+    </div>
+  </section>
+</div>

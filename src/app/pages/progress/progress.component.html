@@ -1,0 +1,67 @@
+<div class="progress-container">
+  <header class="progress-header">
+    <h1>Your Learning Progress</h1>
+    <div *ngIf="daysUntilExam !== null" class="exam-countdown">
+      <span [class.urgent]="daysUntilExam < 14">
+        {{ daysUntilExam }} days until exam
+      </span>
+    </div>
+  </header>
+  
+  <section class="overall-progress">
+    <h2>Overall Mastery</h2>
+    <div class="mastery-meter">
+      <div class="mastery-bar" 
+           [style.width.%]="totalMasteryPercentage"
+           [class]="getMasteryColorClass(totalMasteryPercentage)">
+        <span class="mastery-percentage">{{ totalMasteryPercentage }}%</span>
+      </div>
+    </div>
+  </section>
+  
+  <section class="topic-progress">
+    <h2>Progress by Topic</h2>
+    <p class="topic-hint">Topics are sorted with your weakest areas first</p>
+    
+    <div class="topics-list">
+      <div *ngFor="let topic of topicProgress" class="topic-card">
+        <div class="topic-info">
+          <h3>{{ topic.topicName }}</h3>
+          <div class="subject-name">{{ topic.subjectName }}</div>
+          <div class="topic-stats">
+            <div>Questions: {{ topic.totalQuestions }}</div>
+            <div>Correct: {{ topic.correctCount }}</div>
+            <div>Incorrect: {{ topic.incorrectCount }}</div>
+          </div>
+        </div>
+        
+        <div class="topic-mastery">
+          <div class="mastery-label">Mastery</div>
+          <div class="mastery-meter small">
+            <div class="mastery-bar" 
+                 [style.width.%]="topic.masteryPercentage"
+                 [class]="getMasteryColorClass(topic.masteryPercentage)">
+              <span class="mastery-percentage">{{ topic.masteryPercentage }}%</span>
+            </div>
+          </div>
+        </div>
+      </div>
+      
+      <div *ngIf="topicProgress.length === 0" class="no-progress">
+        <p>No progress data available yet. Start studying to see your progress!</p>
+        <button class="primary-button" [routerLink]="['/study']">
+          Start Study Session
+        </button>
+      </div>
+    </div>
+  </section>
+  
+  <section class="progress-actions">
+    <button class="primary-button" [routerLink]="['/study']">
+      Continue Studying
+    </button>
+    <button class="secondary-button" [routerLink]="['/']">
+      Back to Home
+    </button>
+  </section>
+</div>

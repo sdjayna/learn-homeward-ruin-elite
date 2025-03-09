@@ -1,0 +1,63 @@
+<div class="subject-detail-container" *ngIf="subject">
+  <header class="subject-header">
+    <div class="subject-icon">{{ getSubjectIcon(subject.type) }}</div>
+    <div class="subject-info">
+      <h1>{{ subject.name }}</h1>
+      <p>{{ subject.description }}</p>
+    </div>
+  </header>
+  
+  <div class="subject-content">
+    <aside class="topics-sidebar">
+      <h2>Topics</h2>
+      <ul class="topics-list">
+        <li *ngFor="let topic of subject.topics" 
+            [class.active]="selectedTopic?.id === topic.id"
+            (click)="selectTopic(topic)">
+          {{ topic.name }}
+        </li>
+      </ul>
+      <div class="sidebar-actions">
+        <button class="primary-button" [routerLink]="['/study']">
+          Start Study Session
+        </button>
+      </div>
+    </aside>
+    
+    <main class="topic-content">
+      <div *ngIf="!selectedTopic" class="no-topic-selected">
+        <h2>Select a topic to begin</h2>
+        <p>Choose a topic from the sidebar to see available questions and resources.</p>
+      </div>
+      
+      <div *ngIf="selectedTopic" class="topic-details">
+        <h2>{{ selectedTopic.name }}</h2>
+        <p>{{ selectedTopic.description }}</p>
+        
+        <div class="topic-questions" *ngIf="topicQuestions.length > 0">
+          <h3>Sample Questions</h3>
+          <div class="questions-list">
+            <div *ngFor="let question of topicQuestions" class="question-card">
+              <p>{{ question.text }}</p>
+              <div class="question-difficulty">
+                Difficulty: {{ question.difficulty }}/10
+              </div>
+            </div>
+          </div>
+        </div>
+        
+        <div *ngIf="topicQuestions.length === 0" class="no-questions">
+          <p>No sample questions available for this topic yet.</p>
+        </div>
+      </div>
+    </main>
+  </div>
+</div>
+
+<div class="not-found" *ngIf="!subject">
+  <h2>Subject not found</h2>
+  <p>The subject you're looking for doesn't exist.</p>
+  <button class="primary-button" [routerLink]="['/']">
+    Return to Home
+  </button>
+</div>

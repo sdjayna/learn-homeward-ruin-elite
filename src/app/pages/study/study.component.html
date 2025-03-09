@@ -1,0 +1,26 @@
+<div class="study-container">
+  <header class="study-header">
+    <h1>Study Session</h1>
+    <div class="progress-info">
+      <span>Questions completed: {{ questionsCompleted }}</span>
+    </div>
+  </header>
+  
+  <main class="study-content">
+    <div *ngIf="loading" class="loading">
+      <p>Loading questions...</p>
+    </div>
+    
+    <div *ngIf="sessionComplete" class="session-complete">
+      <h2>Session Complete!</h2>
+      <p>You've completed all the questions scheduled for now.</p>
+      <button (click)="startNewSession()" class="primary-button">Start New Session</button>
+    </div>
+    
+    <app-question-answer 
+      *ngIf="!loading && !sessionComplete && currentQuestion"
+      [question]="currentQuestion"
+      (answerSelected)="onAnswerSelected($event)">
+    </app-question-answer>
+  </main>
+</div>

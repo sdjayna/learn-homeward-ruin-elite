@@ -1,0 +1,38 @@
+<div class="question-answer-container" *ngIf="question">
+  <div class="question-pane">
+    <h2>Question</h2>
+    <p class="question-text">{{ question.text }}</p>
+    
+    <div *ngIf="question.imageUrl" class="question-image">
+      <img [src]="question.imageUrl" alt="Question image">
+    </div>
+  </div>
+  
+  <div class="answer-pane">
+    <h2>Choose your answer</h2>
+    <div class="answer-options">
+      <button 
+        *ngFor="let answer of question.answers" 
+        class="answer-button" 
+        [class]="getAnswerClass(answer)"
+        (click)="selectAnswer(answer)">
+        {{ answer.text }}
+      </button>
+    </div>
+    
+    <div *ngIf="answered && selectedAnswer" class="answer-feedback">
+      <div *ngIf="selectedAnswer.isCorrect" class="correct-feedback">
+        <h3>Correct!</h3>
+        <p *ngIf="selectedAnswer.explanation">{{ selectedAnswer.explanation }}</p>
+      </div>
+      
+      <div *ngIf="!selectedAnswer.isCorrect" class="incorrect-feedback">
+        <h3>Incorrect</h3>
+        <p *ngIf="selectedAnswer.explanation">{{ selectedAnswer.explanation }}</p>
+        <p *ngIf="!selectedAnswer.explanation">The correct answer was: 
+          {{ question.answers.find(a => a.isCorrect)?.text }}
+        </p>
+      </div>
+    </div>
+  </div>
+</div>

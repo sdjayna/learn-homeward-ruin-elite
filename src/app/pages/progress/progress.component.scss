@@ -1,0 +1,178 @@
+.progress-container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 2rem 1rem;
+}
+
+.progress-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 2rem;
+  
+  h1 {
+    margin: 0;
+  }
+  
+  .exam-countdown {
+    font-size: 1.1rem;
+    padding: 0.5rem 1rem;
+    background-color: #f5f5f5;
+    border-radius: 4px;
+    
+    .urgent {
+      color: #d9534f;
+      font-weight: bold;
+    }
+  }
+}
+
+.overall-progress, .topic-progress {
+  background-color: white;
+  border-radius: 8px;
+  padding: 1.5rem;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  margin-bottom: 2rem;
+  
+  h2 {
+    margin-top: 0;
+    margin-bottom: 1rem;
+  }
+}
+
+.mastery-meter {
+  height: 2rem;
+  background-color: #f5f5f5;
+  border-radius: 4px;
+  overflow: hidden;
+  
+  &.small {
+    height: 1.5rem;
+  }
+  
+  .mastery-bar {
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    padding: 0 1rem;
+    color: white;
+    transition: width 0.5s ease;
+    
+    &.mastery-low {
+      background-color: #d9534f;
+    }
+    
+    &.mastery-medium {
+      background-color: #f0ad4e;
+    }
+    
+    &.mastery-high {
+      background-color: #5cb85c;
+    }
+    
+    .mastery-percentage {
+      font-weight: bold;
+    }
+  }
+}
+
+.topic-hint {
+  color: #666;
+  font-style: italic;
+  margin-bottom: 1rem;
+}
+
+.topics-list {
+  display: grid;
+  grid-gap: 1rem;
+}
+
+.topic-card {
+  display: grid;
+  grid-template-columns: 1fr auto;
+  grid-gap: 1.5rem;
+  padding: 1rem;
+  background-color: #f9f9f9;
+  border-radius: 8px;
+  
+  @media (max-width: 768px) {
+    grid-template-columns: 1fr;
+  }
+  
+  .topic-info {
+    h3 {
+      margin-top: 0;
+      margin-bottom: 0.25rem;
+    }
+    
+    .subject-name {
+      color: #666;
+      margin-bottom: 0.5rem;
+    }
+    
+    .topic-stats {
+      display: flex;
+      gap: 1rem;
+      color: #666;
+      font-size: 0.9rem;
+    }
+  }
+  
+  .topic-mastery {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    min-width: 200px;
+    
+    .mastery-label {
+      margin-bottom: 0.5rem;
+      font-weight: bold;
+    }
+  }
+}
+
+.no-progress {
+  text-align: center;
+  padding: 2rem;
+  background-color: #f9f9f9;
+  border-radius: 8px;
+  
+  p {
+    margin-bottom: 1.5rem;
+    color: #666;
+  }
+}
+
+.progress-actions {
+  display: flex;
+  gap: 1rem;
+  justify-content: center;
+  
+  .primary-button, .secondary-button {
+    padding: 0.75rem 1.5rem;
+    border: none;
+    border-radius: 4px;
+    font-size: 1rem;
+    cursor: pointer;
+    transition: background-color 0.2s;
+  }
+  
+  .primary-button {
+    background-color: #4a6da7;
+    color: white;
+    
+    &:hover {
+      background-color: #3a5d97;
+    }
+  }
+  
+  .secondary-button {
+    background-color: #f5f5f5;
+    color: #333;
+    
+    &:hover {
+      background-color: #e8e8e8;
+    }
+  }
+}
