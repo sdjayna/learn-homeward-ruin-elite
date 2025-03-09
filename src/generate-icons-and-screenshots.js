@@ -28,7 +28,8 @@ const splashDir = path.join(assetsDir, 'splash');
 const screenshotsDir = path.join(assetsDir, 'screenshots');
 const sourceDir = path.join(assetsDir, 'source');
 const sourceIconPath = path.join(sourceDir, 'icon.png');
-const sourceSplashPath = path.join(sourceDir, 'splash.png');
+const sourceNarrowSplashPath = path.join(sourceDir, 'narrow-splash.png');
+const sourceWideSplashPath = path.join(sourceDir, 'wide-splash.png');
 const sourceNarrowScreenshotPath = path.join(sourceDir, 'narrow-screenshot.png');
 const sourceWideScreenshotPath = path.join(sourceDir, 'wide-screenshot.png');
 const manifestPath = path.join(__dirname, 'manifest.webmanifest');
@@ -84,11 +85,18 @@ function checkSourceFiles() {
       description: 'Used to generate all app icons'
     },
     { 
-      path: sourceSplashPath, 
-      name: 'Splash Screen', 
-      minSize: 2732, 
-      recommendedSize: '2732x2732',
-      description: 'Used to generate all splash screens'
+      path: sourceNarrowSplashPath, 
+      name: 'Narrow Splash Screen', 
+      minSize: 1242, 
+      recommendedSize: '1242x2688',
+      description: 'Used to generate mobile splash screens'
+    },
+    { 
+      path: sourceWideSplashPath, 
+      name: 'Wide Splash Screen', 
+      minSize: 2048, 
+      recommendedSize: '2048x2732',
+      description: 'Used to generate tablet splash screens'
     },
     {
       path: sourceNarrowScreenshotPath,
@@ -155,9 +163,13 @@ if (!sourceFilesExist) {
     console.error(`  - ${sourceIconPath} (512x512 PNG recommended)`);
     console.error(`    ${colors.yellow}Purpose:${colors.reset} Used to generate all app icons`);
   }
-  if (!fs.existsSync(sourceSplashPath)) {
-    console.error(`  - ${sourceSplashPath} (2732x2732 PNG recommended)`);
-    console.error(`    ${colors.yellow}Purpose:${colors.reset} Used to generate all splash screens`);
+  if (!fs.existsSync(sourceNarrowSplashPath)) {
+    console.error(`  - ${sourceNarrowSplashPath} (1242x2688 PNG recommended)`);
+    console.error(`    ${colors.yellow}Purpose:${colors.reset} Used to generate mobile splash screens`);
+  }
+  if (!fs.existsSync(sourceWideSplashPath)) {
+    console.error(`  - ${sourceWideSplashPath} (2048x2732 PNG recommended)`);
+    console.error(`    ${colors.yellow}Purpose:${colors.reset} Used to generate tablet splash screens`);
   }
   console.error(`\n${colors.yellow}Troubleshooting:${colors.reset}`);
   console.error(`1. Create these files manually, or`);
@@ -205,8 +217,18 @@ async function generateSplashScreens() {
     const outputPath = path.join(splashDir, screen.name);
     
     try {
+      // Determine which splash source to use based on device type
+      const isWideDevice = screen.width > screen.height || screen.width >= 1536;
+      const sourcePath = isWideDevice ? sourceWideSplashPath : sourceNarrowSplashPath;
+      
+      // Check if the source file exists
+      if (!fs.existsSync(sourcePath)) {
+        console.log(`${colors.yellow}⚠ Skipping:${colors.reset} ${outputPath} (source file ${sourcePath} not found)`);
+        continue;
+      }
+      
       // Center the image and resize to cover the entire area
-      await sharp(sourceSplashPath)
+      await sharp(sourcePath)
         .resize({
           width: screen.width,
           height: screen.height,

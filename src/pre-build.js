@@ -30,7 +30,8 @@ const splashDir = path.join(assetsDir, 'splash');
 const screenshotsDir = path.join(assetsDir, 'screenshots');
 const sourceDir = path.join(assetsDir, 'source');
 const sourceIconPath = path.join(sourceDir, 'icon.png');
-const sourceSplashPath = path.join(sourceDir, 'splash.png');
+const sourceNarrowSplashPath = path.join(sourceDir, 'narrow-splash.png');
+const sourceWideSplashPath = path.join(sourceDir, 'wide-splash.png');
 const sourceNarrowScreenshotPath = path.join(sourceDir, 'narrow-screenshot.png');
 const sourceWideScreenshotPath = path.join(sourceDir, 'wide-screenshot.png');
 
@@ -65,11 +66,18 @@ function checkSourceFiles() {
       description: 'Used to generate all app icons' 
     },
     { 
-      path: sourceSplashPath, 
-      name: 'Splash Screen', 
-      minSize: 2732, 
-      recommendedSize: '2732x2732',
-      description: 'Used to generate all splash screens' 
+      path: sourceNarrowSplashPath, 
+      name: 'Narrow Splash Screen', 
+      minSize: 1242, 
+      recommendedSize: '1242x2688',
+      description: 'Used to generate mobile splash screens' 
+    },
+    { 
+      path: sourceWideSplashPath, 
+      name: 'Wide Splash Screen', 
+      minSize: 2048, 
+      recommendedSize: '2048x2732',
+      description: 'Used to generate tablet splash screens' 
     },
     {
       path: sourceNarrowScreenshotPath,
@@ -142,11 +150,19 @@ function checkMissingSourceFiles() {
     });
   }
   
-  if (!fs.existsSync(sourceSplashPath)) {
+  if (!fs.existsSync(sourceNarrowSplashPath)) {
     missingFiles.push({
-      path: sourceSplashPath,
-      name: 'Splash Screen',
-      recommendedSize: '2732x2732'
+      path: sourceNarrowSplashPath,
+      name: 'Narrow Splash Screen',
+      recommendedSize: '1242x2688'
+    });
+  }
+  
+  if (!fs.existsSync(sourceWideSplashPath)) {
+    missingFiles.push({
+      path: sourceWideSplashPath,
+      name: 'Wide Splash Screen',
+      recommendedSize: '2048x2732'
     });
   }
   
@@ -186,14 +202,17 @@ const sourceFilesExist = checkSourceFiles();
 checkMissingSourceFiles();
 
 // Verify source files exist before proceeding
-if (!fs.existsSync(sourceIconPath) || !fs.existsSync(sourceSplashPath)) {
+if (!fs.existsSync(sourceIconPath) || (!fs.existsSync(sourceNarrowSplashPath) && !fs.existsSync(sourceWideSplashPath))) {
   console.error(`\n${colors.brightRed}✗ Critical Error:${colors.reset} Required source files are missing`);
   console.error(`${colors.yellow}Please create the following files:${colors.reset}`);
   if (!fs.existsSync(sourceIconPath)) {
     console.error(`  - ${sourceIconPath} (512x512 PNG recommended)`);
   }
-  if (!fs.existsSync(sourceSplashPath)) {
-    console.error(`  - ${sourceSplashPath} (2732x2732 PNG recommended)`);
+  if (!fs.existsSync(sourceNarrowSplashPath)) {
+    console.error(`  - ${sourceNarrowSplashPath} (1242x2688 PNG recommended for mobile)`);
+  }
+  if (!fs.existsSync(sourceWideSplashPath)) {
+    console.error(`  - ${sourceWideSplashPath} (2048x2732 PNG recommended for tablets)`);
   }
   console.error(`${colors.yellow}The build will continue but icon and splash screen generation may fail.${colors.reset}`);
   console.log(`\n${colors.brightYellow}⚠ Warning:${colors.reset} Continuing build process despite missing source files`);
