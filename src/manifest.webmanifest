@@ -151,56 +151,64 @@
       "sizes": "750x1334",
       "type": "image/png",
       "form_factor": "narrow",
-      "label": "iPhone 6/7/8 Splash Screen"
+      "label": "iPhone 6/7/8 Splash Screen",
+      "purpose": "apple-touch-startup-image"
     },
     {
       "src": "assets/splash/splash-828x1792.png",
       "sizes": "828x1792",
       "type": "image/png",
       "form_factor": "narrow",
-      "label": "iPhone XR Splash Screen"
+      "label": "iPhone XR Splash Screen",
+      "purpose": "apple-touch-startup-image"
     },
     {
       "src": "assets/splash/splash-1125x2436.png",
       "sizes": "1125x2436",
       "type": "image/png",
       "form_factor": "narrow",
-      "label": "iPhone X/XS Splash Screen"
+      "label": "iPhone X/XS Splash Screen",
+      "purpose": "apple-touch-startup-image"
     },
     {
       "src": "assets/splash/splash-1242x2688.png",
       "sizes": "1242x2688",
       "type": "image/png",
       "form_factor": "narrow",
-      "label": "iPhone XS Max Splash Screen"
+      "label": "iPhone XS Max Splash Screen",
+      "purpose": "apple-touch-startup-image"
     },
     {
       "src": "assets/splash/splash-1536x2048.png",
       "sizes": "1536x2048",
       "type": "image/png",
       "form_factor": "wide",
-      "label": "iPad Mini/Air Splash Screen"
+      "label": "iPad Mini/Air Splash Screen",
+      "purpose": "apple-touch-startup-image"
     },
     {
       "src": "assets/splash/splash-1668x2224.png",
       "sizes": "1668x2224",
       "type": "image/png",
       "form_factor": "wide",
-      "label": "iPad Pro 10.5\" Splash Screen"
+      "label": "iPad Pro 10.5\" Splash Screen",
+      "purpose": "apple-touch-startup-image"
     },
     {
       "src": "assets/splash/splash-1668x2388.png",
       "sizes": "1668x2388",
       "type": "image/png",
       "form_factor": "wide",
-      "label": "iPad Pro 11\" Splash Screen"
+      "label": "iPad Pro 11\" Splash Screen",
+      "purpose": "apple-touch-startup-image"
     },
     {
       "src": "assets/splash/splash-2048x2732.png",
       "sizes": "2048x2732",
       "type": "image/png",
       "form_factor": "wide",
-      "label": "iPad Pro 12.9\" Splash Screen"
+      "label": "iPad Pro 12.9\" Splash Screen",
+      "purpose": "apple-touch-startup-image"
     }
   ],
   "shortcuts": [

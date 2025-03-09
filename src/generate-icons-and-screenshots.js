@@ -56,6 +56,9 @@ const iconSizes = [72, 96, 128, 144, 152, 192, 384, 512];
 // They provide a branded loading experience while the app initializes
 // These are referenced in the manifest.webmanifest and used by iOS/iPadOS devices
 // For Android, the splash screen is generated from the manifest theme_color and icons
+// 
+// Note: Splash screens are technically a type of screenshot with a specific purpose
+// They're defined in the same "screenshots" array in the manifest with a purpose of "apple-touch-startup-image"
 const splashScreens = [
   { width: 640, height: 1136, name: 'splash-640x1136.png', device: 'iPhone 5/SE' },
   { width: 750, height: 1334, name: 'splash-750x1334.png', device: 'iPhone 6/7/8' },
@@ -192,6 +195,7 @@ async function generateIcons() {
 // Generate splash screens
 // These are used by iOS/iPadOS when launching the PWA from the home screen
 // They provide a branded loading experience instead of a white screen
+// Technically, splash screens are a type of screenshot with a specific purpose
 async function generateSplashScreens() {
   console.log(`\n${colors.cyan}Generating splash screens...${colors.reset}`);
   let successCount = 0;
@@ -223,7 +227,7 @@ async function generateSplashScreens() {
   return { successCount, errorCount };
 }
 
-// Generate screenshots
+// Generate screenshots (app store/promotional screenshots, not splash screens)
 async function generateScreenshots() {
   // Load manifest to get screenshot definitions
   let screenshots = [];
@@ -231,14 +235,19 @@ async function generateScreenshots() {
     const manifestContent = fs.readFileSync(manifestPath, 'utf8');
     const manifest = JSON.parse(manifestContent);
     if (manifest && manifest.screenshots) {
-      screenshots = manifest.screenshots.filter(s => !s.src.includes('splash/splash-'));
+      // Only include screenshots that aren't splash screens
+      // Splash screens are in the splash directory and have a specific purpose
+      screenshots = manifest.screenshots.filter(s => 
+        !s.src.includes('splash/splash-') && 
+        (!s.purpose || s.purpose !== 'apple-touch-startup-image')
+      );
     }
   } catch (error) {
     console.error(`${colors.red}Failed to load manifest:${colors.reset} ${error.message}`);
   }
 
   if (screenshots.length === 0) {
-    console.log(`\n${colors.yellow}No screenshots defined in manifest${colors.reset}`);
+    console.log(`\n${colors.yellow}No app screenshots defined in manifest${colors.reset}`);
     return { successCount: 0, errorCount: 0 };
   }
   
