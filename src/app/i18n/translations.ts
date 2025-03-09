@@ -1,4 +1,12 @@
-export const translations = {
+export type SupportedLanguages = 'en' | 'es' | 'fr';
+
+export interface TranslationStructure {
+  app: {
+    title: string;
+  };
+}
+
+export const translations: Record<SupportedLanguages, TranslationStructure> = {
   en: {
     app: {
       title: "Spaced Repetition Learning Tool for 11+"

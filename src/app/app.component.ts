@@ -3,7 +3,7 @@ import { RouterOutlet, RouterModule } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { MobileNavComponent } from './components/mobile-nav/mobile-nav.component';
 import { DesktopNavComponent } from './components/desktop-nav/desktop-nav.component';
-import { translations } from './i18n/translations';
+import { translations, SupportedLanguages } from './i18n/translations';
 
 @Component({
   selector: 'app-root',
@@ -41,10 +41,7 @@ export class AppComponent implements OnInit {
   }
   
   updateTitle(lang: string): void {
-    if (translations[lang] && translations[lang].app && translations[lang].app.title) {
-      this.title = translations[lang].app.title;
-    } else {
-      this.title = translations.en.app.title;
-    }
+    const safeLanguage = (lang in translations) ? lang as SupportedLanguages : 'en';
+    this.title = translations[safeLanguage].app.title;
   }
 }

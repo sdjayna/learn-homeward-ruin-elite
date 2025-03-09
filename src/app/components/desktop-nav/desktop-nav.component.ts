@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
-import { translations } from '../../i18n/translations';
+import { translations, SupportedLanguages } from '../../i18n/translations';
 
 @Component({
   selector: 'app-desktop-nav',
@@ -29,10 +29,7 @@ export class DesktopNavComponent implements OnInit {
   }
   
   updateTitle(lang: string): void {
-    if (translations[lang] && translations[lang].app && translations[lang].app.title) {
-      this.appTitle = translations[lang].app.title;
-    } else {
-      this.appTitle = translations.en.app.title;
-    }
+    const safeLanguage = (lang in translations) ? lang as SupportedLanguages : 'en';
+    this.appTitle = translations[safeLanguage].app.title;
   }
 }

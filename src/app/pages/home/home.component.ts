@@ -4,7 +4,7 @@ import { RouterModule } from '@angular/router';
 import { FormsModule } from '@angular/forms';
 import { Subject, SubjectType, SUBJECTS } from '../../models/subject.model';
 import { SpacedRepetitionService } from '../../services/spaced-repetition.service';
-import { translations } from '../../i18n/translations';
+import { translations, SupportedLanguages } from '../../i18n/translations';
 
 @Component({
   selector: 'app-home',
@@ -44,11 +44,8 @@ export class HomeComponent implements OnInit {
   }
   
   updateTitle(lang: string): void {
-    if (translations[lang] && translations[lang].app && translations[lang].app.title) {
-      this.appTitle = translations[lang].app.title;
-    } else {
-      this.appTitle = translations.en.app.title;
-    }
+    const safeLanguage = (lang in translations) ? lang as SupportedLanguages : 'en';
+    this.appTitle = translations[safeLanguage].app.title;
   }
   
   updateTargetDate(): void {
