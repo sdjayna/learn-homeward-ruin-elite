@@ -25,8 +25,12 @@ const __dirname = path.dirname(__filename);
 const assetsDir = path.join(__dirname, 'assets');
 const iconDir = path.join(assetsDir, 'icons');
 const splashDir = path.join(assetsDir, 'splash');
+const screenshotsDir = path.join(assetsDir, 'screenshots');
 const sourceIconPath = path.join(assetsDir, 'source-icon.png');
 const sourceSplashPath = path.join(assetsDir, 'source-splash.png');
+const sourceNarrowScreenshotPath = path.join(assetsDir, 'source-narrow-screenshot.png');
+const sourceWideScreenshotPath = path.join(assetsDir, 'source-wide-screenshot.png');
+const manifestPath = path.join(__dirname, 'manifest.webmanifest');
 
 // Ensure directories exist
 const dirsToCheck = [assetsDir, iconDir, splashDir];
@@ -212,6 +216,85 @@ async function generateSplashScreens() {
   return { successCount, errorCount };
 }
 
+// Generate screenshots
+async function generateScreenshots() {
+  // Load manifest to get screenshot definitions
+  let screenshots = [];
+  try {
+    const manifestContent = fs.readFileSync(manifestPath, 'utf8');
+    const manifest = JSON.parse(manifestContent);
+    if (manifest && manifest.screenshots) {
+      screenshots = manifest.screenshots.filter(s => !s.src.includes('splash/splash-'));
+    }
+  } catch (error) {
+    console.error(`${colors.red}Failed to load manifest:${colors.reset} ${error.message}`);
+  }
+
+  if (screenshots.length === 0) {
+    console.log(`\n${colors.yellow}No screenshots defined in manifest${colors.reset}`);
+    return { successCount: 0, errorCount: 0 };
+  }
+  
+  console.log(`\n${colors.cyan}Generating screenshots...${colors.reset}`);
+  let successCount = 0;
+  let errorCount = 0;
+  
+  for (const screenshot of screenshots) {
+    const outputPath = path.join(__dirname, screenshot.path);
+    const outputDir = path.dirname(outputPath);
+    
+    // Ensure the output directory exists
+    if (!fs.existsSync(outputDir)) {
+      try {
+        fs.mkdirSync(outputDir, { recursive: true });
+        console.log(`${colors.green}Created directory:${colors.reset} ${outputDir}`);
+      } catch (error) {
+        console.error(`${colors.red}Failed to create directory:${colors.reset} ${outputDir}`);
+        errorCount++;
+        continue;
+      }
+    }
+    
+    // Determine which source file to use based on form factor
+    let sourcePath;
+    if (screenshot.form_factor === 'narrow') {
+      sourcePath = sourceNarrowScreenshotPath;
+    } else if (screenshot.form_factor === 'wide') {
+      sourcePath = sourceWideScreenshotPath;
+    } else {
+      // Default to narrow for unknown form factors
+      sourcePath = sourceNarrowScreenshotPath;
+    }
+    
+    // Skip if the source file doesn't exist
+    if (!fs.existsSync(sourcePath)) {
+      console.log(`${colors.yellow}⚠ Skipping:${colors.reset} ${outputPath} (source file ${sourcePath} not found)`);
+      continue;
+    }
+    
+    try {
+      // Generate the screenshot with the correct dimensions
+      await sharp(sourcePath)
+        .resize({
+          width: parseInt(screenshot.sizes.split('x')[0], 10),
+          height: parseInt(screenshot.sizes.split('x')[1], 10),
+          fit: 'cover',
+          position: 'center'
+        })
+        .toFile(outputPath);
+      
+      console.log(`${colors.green}✓ Created:${colors.reset} ${outputPath} (${screenshot.sizes}, ${screenshot.form_factor})`);
+      successCount++;
+    } catch (error) {
+      console.error(`${colors.red}✗ Error creating ${outputPath}:${colors.reset} ${error.message}`);
+      errorCount++;
+    }
+  }
+  
+  console.log(`${colors.cyan}Screenshot generation complete:${colors.reset} ${successCount} succeeded, ${errorCount} failed`);
+  return { successCount, errorCount };
+}
+
 // Run the generation
 async function run() {
   try {
@@ -221,18 +304,20 @@ async function run() {
     // Generate assets
     const iconResults = await generateIcons();
     const splashResults = await generateSplashScreens();
+    const screenshotResults = await generateScreenshots();
     
     // Calculate totals
-    const totalSuccess = iconResults.successCount + splashResults.successCount;
-    const totalError = iconResults.errorCount + splashResults.errorCount;
+    const totalSuccess = iconResults.successCount + splashResults.successCount + screenshotResults.successCount;
+    const totalError = iconResults.errorCount + splashResults.errorCount + screenshotResults.errorCount;
     const totalAssets = totalSuccess + totalError;
     
     // Print summary
     console.log(`\n${colors.cyan}Generation Summary${colors.reset}`);
     console.log(`${colors.cyan}==================${colors.reset}`);
-    console.log(`${colors.green}✓ Total assets generated:${colors.reset} ${totalSuccess}/${totalAssets} (${Math.round(totalSuccess/totalAssets*100)}%)`);
+    console.log(`${colors.green}✓ Total assets generated:${colors.reset} ${totalSuccess}/${totalAssets} (${totalAssets > 0 ? Math.round(totalSuccess/totalAssets*100) : 0}%)`);
     console.log(`${colors.green}✓ Icons generated:${colors.reset} ${iconResults.successCount}/${iconSizes.length}`);
     console.log(`${colors.green}✓ Splash screens generated:${colors.reset} ${splashResults.successCount}/${splashScreens.length}`);
+    console.log(`${colors.green}✓ Screenshots generated:${colors.reset} ${screenshotResults.successCount}`);
     
     if (totalError > 0) {
       console.log(`\n${colors.brightYellow}⚠ Warning:${colors.reset} ${totalError} assets failed to generate`);
