@@ -1,7 +1,7 @@
 # Cloudflare Pages configuration
 [build]
   command = "npm run build"
-  publish = "dist"
+  publish = "dist/browser"
   node_bundler = "esbuild"
 
 [build.environment]
