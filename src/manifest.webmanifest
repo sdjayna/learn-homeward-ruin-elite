@@ -1,7 +1,7 @@
 {
-  "name": "Learn Homeward Ruin Elite",
-  "short_name": "LHRE",
-  "description": "A Progressive Web Application built with Angular",
+  "name": "Spaced Repetition Learning Tool for 11+",
+  "short_name": "11+ Learning",
+  "description": "A spaced repetition learning tool to help prepare for 11+ exams",
   "theme_color": "#1976d2",
   "background_color": "#fafafa",
   "display": "standalone",
@@ -62,6 +62,34 @@
     }
   ],
   "screenshots": [
+    {
+      "src": "assets/screenshots/narrow-home.png",
+      "sizes": "750x1334",
+      "type": "image/png",
+      "form_factor": "narrow",
+      "label": "Home screen on mobile"
+    },
+    {
+      "src": "assets/screenshots/narrow-study.png",
+      "sizes": "750x1334",
+      "type": "image/png",
+      "form_factor": "narrow",
+      "label": "Study session on mobile"
+    },
+    {
+      "src": "assets/screenshots/wide-home.png",
+      "sizes": "1920x1080",
+      "type": "image/png",
+      "form_factor": "wide",
+      "label": "Home screen on desktop"
+    },
+    {
+      "src": "assets/screenshots/wide-study.png",
+      "sizes": "1920x1080",
+      "type": "image/png",
+      "form_factor": "wide",
+      "label": "Study session on desktop"
+    },
     {
       "src": "assets/splash/splash-640x1136.png",
       "sizes": "640x1136",
@@ -137,14 +165,14 @@
   ],
   "lang_resources": {
     "fr": {
-      "name": "Apprendre Homeward Ruin Elite",
-      "short_name": "AHRE",
-      "description": "Une application web progressive construite avec Angular"
+      "name": "Outil d'Apprentissage par Répétition Espacée pour 11+",
+      "short_name": "Apprentissage 11+",
+      "description": "Un outil d'apprentissage par répétition espacée pour préparer les examens 11+"
     },
     "es": {
-      "name": "Aprende Homeward Ruin Elite",
-      "short_name": "AHRE",
-      "description": "Una aplicación web progresiva construida con Angular"
+      "name": "Herramienta de Aprendizaje de Repetición Espaciada para 11+",
+      "short_name": "Aprendizaje 11+",
+      "description": "Una herramienta de aprendizaje de repetición espaciada para preparar los exámenes 11+"
     }
   },
   "related_applications": [],
