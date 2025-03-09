@@ -12,6 +12,46 @@
 </head>
 <body>
   <h1>stephen jayna</h1>
+  <div id="pwa-status" style="background-color: #f8d7da; color: #721c24; padding: 10px; margin: 10px; border-radius: 5px; display: none;">
+    Checking PWA and Service Worker status...
+  </div>
   <app-root></app-root>
+
+  <script>
+    // Display PWA status
+    document.addEventListener('DOMContentLoaded', function() {
+      const statusBanner = document.getElementById('pwa-status');
+      statusBanner.style.display = 'block';
+      
+      // Check if service worker is supported
+      if ('serviceWorker' in navigator) {
+        statusBanner.innerHTML = 'Service Worker is supported in this browser.';
+        statusBanner.style.backgroundColor = '#d4edda';
+        statusBanner.style.color = '#155724';
+        
+        // Check if service worker is registered
+        navigator.serviceWorker.getRegistration().then(registration => {
+          if (registration) {
+            statusBanner.innerHTML = 'PWA Ready: Service Worker is registered and active!';
+          } else {
+            statusBanner.innerHTML = 'Service Worker supported but not yet registered.';
+            statusBanner.style.backgroundColor = '#fff3cd';
+            statusBanner.style.color = '#856404';
+          }
+        });
+        
+        // Listen for messages from the service worker
+        navigator.serviceWorker.addEventListener('message', event => {
+          if (event.data && event.data.type === 'CACHE_COMPLETE') {
+            statusBanner.innerHTML = 'PWA Ready: Service Worker is active and cache is complete!';
+            statusBanner.style.backgroundColor = '#d4edda';
+            statusBanner.style.color = '#155724';
+          }
+        });
+      } else {
+        statusBanner.innerHTML = 'Service Worker is not supported in this browser. PWA functionality will be limited.';
+      }
+    });
+  </script>
 </body>
 </html>

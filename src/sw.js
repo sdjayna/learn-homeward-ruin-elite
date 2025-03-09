@@ -14,9 +14,26 @@ self.addEventListener('install', event => {
   event.waitUntil(
     caches.open(CACHE_NAME)
       .then(cache => {
-        return cache.addAll(urlsToCache);
+        return cache.addAll(urlsToCache)
+          .then(() => {
+            // Notify all clients that caching is complete
+            self.clients.matchAll().then(clients => {
+              clients.forEach(client => {
+                client.postMessage({
+                  type: 'CACHE_COMPLETE',
+                  timestamp: new Date().getTime()
+                });
+              });
+            });
+            return self.skipWaiting();
+          });
       })
   );
+});
+
+// Activate and claim clients so the page is controlled immediately
+self.addEventListener('activate', event => {
+  event.waitUntil(self.clients.claim());
 });
 
 self.addEventListener('fetch', event => {
