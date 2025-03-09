@@ -4,25 +4,42 @@ const urlsToCache = [
   '/',
   '/index.html',
   '/manifest.webmanifest',
-  '/favicon.ico',
-  '/main-DGCLVVKX.js',
-  '/polyfills-FFHMD2TL.js',
-  '/styles-5INURTSO.css'
+  '/favicon.ico'
+  // Don't hardcode JS filenames as they may change with each build
 ];
 
 self.addEventListener('install', event => {
   event.waitUntil(
     caches.open(CACHE_NAME)
       .then(cache => {
-        return cache.addAll(urlsToCache)
+        // Use individual cache.put operations instead of cache.addAll
+        // This allows us to continue even if some resources fail
+        const cachePromises = urlsToCache.map(url => {
+          return fetch(url)
+            .then(response => {
+              if (!response.ok) {
+                throw new Error(`Failed to fetch ${url}`);
+              }
+              return cache.put(url, response);
+            })
+            .catch(error => {
+              console.warn(`Failed to cache ${url}: ${error.message}`);
+              // Continue despite the error
+              return Promise.resolve();
+            });
+        });
+        
+        return Promise.all(cachePromises)
           .then(() => {
+            console.log('Caching completed successfully');
             // Notify all clients that caching is complete
-            self.clients.matchAll().then(clients => {
-              clients.forEach(client => {
-                client.postMessage({
-                  type: 'CACHE_COMPLETE',
-                  timestamp: new Date().getTime()
-                });
+            return self.clients.matchAll();
+          })
+          .then(clients => {
+            clients.forEach(client => {
+              client.postMessage({
+                type: 'CACHE_COMPLETE',
+                timestamp: new Date().getTime()
               });
             });
             return self.skipWaiting();
