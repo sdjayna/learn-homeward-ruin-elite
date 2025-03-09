@@ -25,6 +25,17 @@
   </section>
   
   <section class="settings-section">
+    <h2>{{ translations.settings.examDate }}</h2>
+    <div class="date-picker">
+      <label for="exam-date">{{ translations.settings.selectExamDate }}</label>
+      <input id="exam-date" type="date" [(ngModel)]="targetExamDate" (change)="updateTargetDate()">
+    </div>
+    <p class="settings-info">
+      {{ translations.settings.examDateHelp }}
+    </p>
+  </section>
+  
+  <section class="settings-section">
     <h2>{{ translations.settings.notifications }}</h2>
     <p class="settings-info">{{ translations.settings.notificationsComingSoon }}</p>
   </section>

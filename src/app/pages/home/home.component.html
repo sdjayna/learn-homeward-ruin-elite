@@ -4,16 +4,6 @@
     <p>{{ translations.app.tagline }}</p>
   </header>
   
-  <section class="exam-date-section">
-    <h2>{{ translations.home.targetExamDate }}</h2>
-    <div class="date-picker">
-      <input type="date" [(ngModel)]="targetExamDate" (change)="updateTargetDate()">
-    </div>
-    <p class="date-info">
-      {{ translations.home.datePickerHelp }}
-    </p>
-  </section>
-  
   <section class="subjects-section">
     <h2>{{ translations.home.studySubjects }}</h2>
     

@@ -15,7 +15,6 @@ import { translations, SupportedLanguages, TranslationStructure } from '../../i1
 })
 export class HomeComponent implements OnInit {
   subjects = SUBJECTS;
-  targetExamDate: string = '';
   appTitle = '';
   translations!: TranslationStructure;
   
@@ -32,28 +31,12 @@ export class HomeComponent implements OnInit {
         this.updateTranslations(e.detail.language);
       }
     });
-    
-    this.spacedRepetitionService.getUserProgress().subscribe(progress => {
-      if (progress?.targetExamDate) {
-        this.targetExamDate = progress.targetExamDate.toISOString().split('T')[0];
-      } else {
-        // Set default target date to September 13th, 2025
-        const defaultDate = new Date('2025-09-13');
-        this.targetExamDate = defaultDate.toISOString().split('T')[0];
-      }
-    });
   }
   
   updateTranslations(lang: string): void {
     const safeLanguage = (lang in translations) ? lang as SupportedLanguages : 'en';
     this.appTitle = translations[safeLanguage].app.title;
     this.translations = translations[safeLanguage];
-  }
-  
-  updateTargetDate(): void {
-    if (this.targetExamDate) {
-      this.spacedRepetitionService.setTargetExamDate(new Date(this.targetExamDate));
-    }
   }
   
   getSubjectIcon(type: SubjectType): string {

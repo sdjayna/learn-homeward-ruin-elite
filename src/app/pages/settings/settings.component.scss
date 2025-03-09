@@ -53,16 +53,17 @@
   }
 }
 
-.language-selector {
+.language-selector, .date-picker {
   display: flex;
   flex-direction: column;
+  margin-bottom: 1rem;
   
   label {
     margin-bottom: 0.5rem;
     font-weight: 500;
   }
   
-  select {
+  select, input {
     padding: 0.75rem;
     font-size: 1rem;
     border: 1px solid #ddd;

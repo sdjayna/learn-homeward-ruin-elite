@@ -90,6 +90,9 @@ export interface TranslationStructure {
     appearanceComingSoon: string;
     notifications: string;
     notificationsComingSoon: string;
+    examDate: string;
+    selectExamDate: string;
+    examDateHelp: string;
   };
   subjects: {
     selectTopic: string;
@@ -193,7 +196,10 @@ export const translations: Record<SupportedLanguages, TranslationStructure> = {
       appearance: "Appearance",
       appearanceComingSoon: "More appearance settings coming soon.",
       notifications: "Notifications",
-      notificationsComingSoon: "Notification settings coming soon."
+      notificationsComingSoon: "Notification settings coming soon.",
+      examDate: "Target Exam Date",
+      selectExamDate: "Select your target exam date:",
+      examDateHelp: "Setting your exam date helps optimize your study schedule"
     },
     subjects: {
       selectTopic: "Select a topic to begin",
@@ -295,7 +301,10 @@ export const translations: Record<SupportedLanguages, TranslationStructure> = {
       appearance: "Apariencia",
       appearanceComingSoon: "Más configuraciones de apariencia próximamente.",
       notifications: "Notificaciones",
-      notificationsComingSoon: "Configuración de notificaciones próximamente."
+      notificationsComingSoon: "Configuración de notificaciones próximamente.",
+      examDate: "Fecha del Examen",
+      selectExamDate: "Selecciona la fecha de tu examen:",
+      examDateHelp: "Establecer la fecha de tu examen ayuda a optimizar tu horario de estudio"
     },
     subjects: {
       selectTopic: "Selecciona un tema para comenzar",
@@ -397,7 +406,10 @@ export const translations: Record<SupportedLanguages, TranslationStructure> = {
       appearance: "Apparence",
       appearanceComingSoon: "Plus de paramètres d'apparence à venir.",
       notifications: "Notifications",
-      notificationsComingSoon: "Paramètres de notifications à venir."
+      notificationsComingSoon: "Paramètres de notifications à venir.",
+      examDate: "Date d'Examen Cible",
+      selectExamDate: "Sélectionnez votre date d'examen cible :",
+      examDateHelp: "Définir votre date d'examen aide à optimiser votre calendrier d'étude"
     },
     subjects: {
       selectTopic: "Sélectionnez un sujet pour commencer",
