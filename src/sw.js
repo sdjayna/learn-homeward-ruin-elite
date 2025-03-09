@@ -88,45 +88,64 @@ self.addEventListener('install', event => {
 
 // Activate and claim clients so the page is controlled immediately
 self.addEventListener('activate', event => {
-  event.waitUntil(self.clients.claim());
+  // Clear old caches
+  event.waitUntil(
+    caches.keys().then(cacheNames => {
+      return Promise.all(
+        cacheNames.filter(cacheName => {
+          return cacheName !== CACHE_NAME;
+        }).map(cacheName => {
+          console.log('[Service Worker] Removing old cache:', cacheName);
+          return caches.delete(cacheName);
+        })
+      );
+    }).then(() => {
+      console.log('[Service Worker] Claiming clients for version', CACHE_NAME);
+      return self.clients.claim();
+    })
+  );
 });
 
 self.addEventListener('fetch', event => {
-  // Check if this is a request for a language-specific resource
-  const url = new URL(event.request.url);
-  const langParam = url.searchParams.get('lang');
+  // Skip cross-origin requests
+  if (!event.request.url.startsWith(self.location.origin)) {
+    return;
+  }
   
-  if (langParam && ['en', 'fr', 'es'].includes(langParam)) {
-    // Handle language-specific request
-    event.respondWith(
-      caches.open(CACHE_NAME).then(cache => {
-        // Try to find the language-specific version first
-        return cache.match(event.request).then(response => {
-          if (response) {
-            return response;
+  // Network-first strategy with cache fallback
+  event.respondWith(
+    fetch(event.request)
+      .then(networkResponse => {
+        // Clone the response before using it
+        const responseToCache = networkResponse.clone();
+        
+        // Update the cache with the fresh version
+        caches.open(CACHE_NAME).then(cache => {
+          cache.put(event.request, responseToCache);
+          console.log('[Service Worker] Updated cache for:', event.request.url);
+        });
+        
+        return networkResponse;
+      })
+      .catch(error => {
+        console.log('[Service Worker] Network request failed, falling back to cache for:', event.request.url);
+        
+        // If network fails, try to get from cache
+        return caches.match(event.request).then(cachedResponse => {
+          if (cachedResponse) {
+            return cachedResponse;
           }
           
-          // If not in cache, fetch from network
-          return fetch(event.request).then(networkResponse => {
-            // Cache the response for future use
-            cache.put(event.request, networkResponse.clone());
-            return networkResponse;
-          });
+          // If not in cache either, return a basic offline page
+          if (event.request.mode === 'navigate') {
+            return caches.match('/index.html');
+          }
+          
+          // For other resources, just fail
+          throw error;
         });
       })
-    );
-  } else {
-    // Handle regular request
-    event.respondWith(
-      caches.match(event.request)
-        .then(response => {
-          if (response) {
-            return response;
-          }
-          return fetch(event.request);
-        })
-    );
-  }
+  );
 });
 
 // Listen for language change messages from clients
@@ -141,6 +160,7 @@ self.addEventListener('message', event => {
           fetch(url).then(response => {
             if (response.ok) {
               cache.put(url, response);
+              console.log(`[Service Worker] Updated cache for language resource: ${url}`);
             }
           }).catch(error => {
             console.warn(`Failed to cache language resource ${url}: ${error.message}`);
@@ -148,5 +168,54 @@ self.addEventListener('message', event => {
         });
       });
     }
+  } else if (event.data && event.data.type === 'SKIP_WAITING') {
+    // Force the waiting service worker to become active
+    self.skipWaiting();
   }
 });
+
+// Periodic background sync to update cache
+self.addEventListener('periodicsync', event => {
+  if (event.tag === 'update-cache') {
+    event.waitUntil(updateCache());
+  }
+});
+
+// Function to update cache in the background
+async function updateCache() {
+  console.log('[Service Worker] Performing background cache update');
+  const cache = await caches.open(CACHE_NAME);
+  
+  // Update core files
+  for (const url of urlsToCache) {
+    try {
+      const response = await fetch(url, { cache: 'no-cache' });
+      if (response.ok) {
+        await cache.put(url, response);
+        console.log(`[Service Worker] Updated cache for: ${url}`);
+      }
+    } catch (error) {
+      console.warn(`[Service Worker] Failed to update cache for ${url}: ${error.message}`);
+    }
+  }
+  
+  // Update language resources for current language
+  const userLang = self.navigator?.language?.split('-')[0] || 'en';
+  const langToUpdate = ['en', 'fr', 'es'].includes(userLang) ? userLang : 'en';
+  
+  if (languageResources[langToUpdate]) {
+    for (const url of languageResources[langToUpdate]) {
+      try {
+        const response = await fetch(url, { cache: 'no-cache' });
+        if (response.ok) {
+          await cache.put(url, response);
+          console.log(`[Service Worker] Updated cache for language resource: ${url}`);
+        }
+      } catch (error) {
+        console.warn(`[Service Worker] Failed to update language resource ${url}: ${error.message}`);
+      }
+    }
+  }
+  
+  console.log('[Service Worker] Background cache update complete');
+}
