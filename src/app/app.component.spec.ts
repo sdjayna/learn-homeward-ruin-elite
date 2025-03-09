@@ -14,10 +14,10 @@ describe('AppComponent', () => {
     expect(app).toBeTruthy();
   });
 
-  it(`should have the 'Learning App' title`, () => {
+  it(`should have the 'Spaced Repetition Learning Tool for 11+' title`, () => {
     const fixture = TestBed.createComponent(AppComponent);
     const app = fixture.componentInstance;
-    expect(app.title).toEqual('Learning App');
+    expect(app.title).toEqual('Spaced Repetition Learning Tool for 11+');
   });
 
   it('should render title in the router outlet', () => {
