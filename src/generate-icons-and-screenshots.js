@@ -240,7 +240,7 @@ async function generateScreenshots() {
   let errorCount = 0;
   
   for (const screenshot of screenshots) {
-    const outputPath = path.join(__dirname, screenshot.path);
+    const outputPath = path.join(__dirname, screenshot.src);
     const outputDir = path.dirname(outputPath);
     
     // Ensure the output directory exists
