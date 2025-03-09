@@ -2,13 +2,55 @@
 <html lang="en" id="html-root">
 <head>
   <meta charset="utf-8">
-  <title>LearnHomewardRuinElite</title>
+  <title>Learn Homeward Ruin Elite</title>
+  <meta name="description" content="A Progressive Web Application built with Angular">
   <base href="/">
   <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
   <link rel="icon" type="image/x-icon" href="favicon.ico">
   <link rel="manifest" href="manifest.webmanifest">
   <meta name="theme-color" content="#1976d2">
+  <!-- Apple PWA meta tags -->
+  <link rel="apple-touch-icon" href="assets/icons/icon-192x192.png">
+  <!-- Add accessibility meta tags -->
+  <meta name="apple-mobile-web-app-title" content="LHRE">
   <script>
+    // Skip to content link for keyboard users
+    document.addEventListener('DOMContentLoaded', function() {
+      const skipLink = document.createElement('a');
+      skipLink.href = '#main-content';
+      skipLink.className = 'skip-link';
+      skipLink.textContent = 'Skip to content';
+      skipLink.style.position = 'absolute';
+      skipLink.style.top = '-40px';
+      skipLink.style.left = '0';
+      skipLink.style.backgroundColor = '#1976d2';
+      skipLink.style.color = 'white';
+      skipLink.style.padding = '8px';
+      skipLink.style.zIndex = '100';
+      skipLink.style.transition = 'top 0.3s';
+      skipLink.style.textDecoration = 'none';
+      skipLink.style.borderRadius = '0 0 4px 0';
+      
+      skipLink.addEventListener('focus', function() {
+        this.style.top = '0';
+      });
+      
+      skipLink.addEventListener('blur', function() {
+        this.style.top = '-40px';
+      });
+      
+      document.body.insertBefore(skipLink, document.body.firstChild);
+      
+      // Add id to main content for skip link
+      const mainContent = document.querySelector('main');
+      if (mainContent) {
+        mainContent.id = 'main-content';
+        mainContent.setAttribute('tabindex', '-1');
+      }
+    });
+    
     // Inline service worker registration script
     if ('serviceWorker' in navigator) {
       window.addEventListener('load', () => {
@@ -43,49 +85,93 @@
       });
     }
   </script>
+  <style>
+    /* Basic accessibility styles */
+    :focus {
+      outline: 3px solid #1976d2;
+      outline-offset: 2px;
+    }
+    
+    @media (prefers-reduced-motion: reduce) {
+      * {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
+        scroll-behavior: auto !important;
+      }
+    }
+    
+    body {
+      line-height: 1.5;
+      font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+    }
+    
+    /* High contrast mode support */
+    @media (forced-colors: active) {
+      button, select, a {
+        forced-color-adjust: none;
+      }
+    }
+  </style>
 </head>
 <body>
-  <h1>stephen jayna</h1>
-  <div id="language-selector" style="padding: 10px; margin: 10px; border-radius: 5px; background-color: #e9ecef;">
-    <label for="language">Language / Langue / Idioma: </label>
-    <select id="language" onchange="changeLanguage(this.value)">
-      <option value="en">English</option>
-      <option value="fr">Français</option>
-      <option value="es">Español</option>
-    </select>
-  </div>
+  <header>
+    <h1 id="page-title">Learn Homeward Ruin Elite</h1>
+    <div id="language-selector" role="region" aria-label="Language selection" style="padding: 10px; margin: 10px; border-radius: 5px; background-color: #e9ecef;">
+      <label for="language" id="language-label">Language / Langue / Idioma: </label>
+      <select id="language" onchange="changeLanguage(this.value)" aria-labelledby="language-label">
+        <option value="en">English</option>
+        <option value="fr">Français</option>
+        <option value="es">Español</option>
+      </select>
+    </div>
+  </header>
   
-  <div id="pwa-status" style="background-color: #f8d7da; color: #721c24; padding: 10px; margin: 10px; border-radius: 5px; display: none;">
+  <div id="pwa-status" role="status" aria-live="polite" style="background-color: #f8d7da; color: #721c24; padding: 10px; margin: 10px; border-radius: 5px; display: none;">
     Checking PWA and Service Worker status...
   </div>
-  <app-root></app-root>
+  <main>
+    <app-root></app-root>
+  </main>
+  <footer role="contentinfo" style="padding: 10px; margin-top: 20px; text-align: center; font-size: 0.9em; color: #6c757d;">
+    <p id="footer-text">© 2025 Learn Homeward Ruin Elite</p>
+  </footer>
 
   <script>
     // Language support
     const translations = {
       en: {
+        pageTitle: 'Learn Homeward Ruin Elite',
+        languageLabel: 'Language:',
         pwaReady: 'PWA Ready: Service Worker is registered and active!',
         swSupported: 'Service Worker is supported in this browser.',
         swNotRegistered: 'Service Worker supported but not yet registered.',
         swNotSupported: 'Service Worker is not supported in this browser. PWA functionality will be limited.',
         cacheComplete: 'PWA Ready: Service Worker is active and cache is complete!',
-        checkingStatus: 'Checking PWA and Service Worker status...'
+        checkingStatus: 'Checking PWA and Service Worker status...',
+        footerText: '© 2025 Learn Homeward Ruin Elite'
       },
       fr: {
+        pageTitle: 'Apprendre Homeward Ruin Elite',
+        languageLabel: 'Langue:',
         pwaReady: 'PWA Prête : Le Service Worker est enregistré et actif !',
         swSupported: 'Le Service Worker est pris en charge dans ce navigateur.',
         swNotRegistered: 'Service Worker pris en charge mais pas encore enregistré.',
         swNotSupported: 'Le Service Worker n\'est pas pris en charge dans ce navigateur. Les fonctionnalités PWA seront limitées.',
         cacheComplete: 'PWA Prête : Le Service Worker est actif et le cache est complet !',
-        checkingStatus: 'Vérification du statut PWA et du Service Worker...'
+        checkingStatus: 'Vérification du statut PWA et du Service Worker...',
+        footerText: '© 2025 Apprendre Homeward Ruin Elite'
       },
       es: {
+        pageTitle: 'Aprende Homeward Ruin Elite',
+        languageLabel: 'Idioma:',
         pwaReady: '¡PWA Lista: El Service Worker está registrado y activo!',
         swSupported: 'El Service Worker es compatible con este navegador.',
         swNotRegistered: 'Service Worker compatible pero aún no registrado.',
         swNotSupported: 'El Service Worker no es compatible con este navegador. La funcionalidad PWA será limitada.',
         cacheComplete: '¡PWA Lista: El Service Worker está activo y el caché está completo!',
-        checkingStatus: 'Comprobando el estado de PWA y Service Worker...'
+        checkingStatus: 'Comprobando el estado de PWA y Service Worker...',
+        footerText: '© 2025 Aprende Homeward Ruin Elite'
       }
     };
     
@@ -120,19 +206,56 @@
       // Update language selector
       document.getElementById('language').value = lang;
       
-      // Update PWA status text
-      updatePwaStatusText(lang);
+      // Update all translated text
+      updateTranslatedText(lang);
+      
+      // Announce language change to screen readers
+      const announcement = document.createElement('div');
+      announcement.setAttribute('aria-live', 'assertive');
+      announcement.setAttribute('role', 'status');
+      announcement.style.position = 'absolute';
+      announcement.style.width = '1px';
+      announcement.style.height = '1px';
+      announcement.style.overflow = 'hidden';
+      
+      // Set the announcement text in the new language
+      if (lang === 'en') {
+        announcement.textContent = 'Language changed to English';
+      } else if (lang === 'fr') {
+        announcement.textContent = 'Langue changée en français';
+      } else if (lang === 'es') {
+        announcement.textContent = 'Idioma cambiado a español';
+      }
+      
+      document.body.appendChild(announcement);
+      
+      // Remove the announcement after it's been read
+      setTimeout(() => {
+        document.body.removeChild(announcement);
+      }, 3000);
       
       // Dispatch event for Angular components to react
-      window.dispatchEvent(new CustomEvent('languageChanged', { detail: { language: lang } }));
+      window.dispatchEvent(new CustomEvent('languageChanged', { 
+        detail: { language: lang } 
+      }));
     }
     
-    // Update PWA status text based on current state and language
-    function updatePwaStatusText(lang) {
+    // Update all translated text elements
+    function updateTranslatedText(lang) {
+      // Update page title
+      document.getElementById('page-title').textContent = translations[lang].pageTitle;
+      document.title = translations[lang].pageTitle;
+      
+      // Update language label
+      document.getElementById('language-label').textContent = translations[lang].languageLabel;
+      
+      // Update PWA status text
       const statusBanner = document.getElementById('pwa-status');
       const currentState = statusBanner.getAttribute('data-state') || 'checking';
-      
       statusBanner.textContent = translations[lang][currentState];
+      
+      // Update footer text
+      document.getElementById('footer-text').textContent = translations[lang].footerText;
     }
     
     // Display PWA status
@@ -144,6 +267,9 @@
       const initialLang = getPreferredLanguage();
       document.getElementById('language').value = initialLang;
       document.getElementById('html-root').setAttribute('lang', initialLang);
+      
+      // Update all translated text with initial language
+      updateTranslatedText(initialLang);
       
       // Notify that language has been set
       console.log('Initial language set to:', initialLang);

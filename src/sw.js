@@ -11,13 +11,13 @@ const urlsToCache = [
 // Language-specific resources
 const languageResources = {
   en: [
-    // English-specific resources would go here
+    '/assets/i18n/en.json'
   ],
   fr: [
-    // French-specific resources would go here
+    '/assets/i18n/fr.json'
   ],
   es: [
-    // Spanish-specific resources would go here
+    '/assets/i18n/es.json'
   ]
 };
 
