@@ -1,6 +1,6 @@
 .desktop-nav {
-  display: flex;
-  justify-content: space-between;
+  display: grid;
+  grid-template-columns: auto 1fr;
   align-items: center;
   padding: 0 2rem;
   height: 70px;
@@ -23,8 +23,10 @@
   }
   
   .nav-links {
-    display: flex;
+    display: grid;
+    grid-template-columns: repeat(4, auto);
     gap: 2rem;
+    justify-content: end;
     
     a {
       text-decoration: none;

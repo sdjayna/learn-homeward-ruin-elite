@@ -9,8 +9,8 @@
 }
 
 .progress-header {
-  display: flex;
-  justify-content: space-between;
+  display: grid;
+  grid-template-columns: 1fr auto;
   align-items: center;
   margin-bottom: 2rem;
   
@@ -116,7 +116,8 @@
     }
     
     .topic-stats {
-      display: flex;
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(80px, auto));
       gap: 1rem;
       color: #666;
       font-size: 0.9rem;
@@ -149,7 +150,8 @@
 }
 
 .progress-actions {
-  display: flex;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(150px, auto));
   gap: 1rem;
   justify-content: center;
   

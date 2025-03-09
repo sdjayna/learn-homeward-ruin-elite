@@ -18,8 +18,8 @@
 }
 
 .question-pane {
-  display: flex;
-  flex-direction: column;
+  display: grid;
+  grid-template-rows: auto auto 1fr;
 }
 
 .question-text {
@@ -30,7 +30,8 @@
 
 .question-image {
   margin-top: auto;
-  text-align: center;
+  display: grid;
+  place-items: center;
   
   img {
     max-width: 100%;

@@ -9,7 +9,8 @@
 }
 
 .home-header {
-  text-align: center;
+  display: grid;
+  place-items: center;
   margin-bottom: 2rem;
   
   h1 {

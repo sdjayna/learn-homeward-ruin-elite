@@ -9,8 +9,8 @@
 }
 
 .settings-header {
-  display: flex;
-  justify-content: space-between;
+  display: grid;
+  grid-template-columns: 1fr auto;
   align-items: center;
   margin-bottom: 2rem;
   
@@ -54,12 +54,12 @@
 }
 
 .language-selector, .date-picker {
-  display: flex;
-  flex-direction: column;
+  display: grid;
+  grid-template-rows: auto auto;
+  gap: 0.5rem;
   margin-bottom: 1rem;
   
   label {
-    margin-bottom: 0.5rem;
     font-weight: 500;
   }
   
