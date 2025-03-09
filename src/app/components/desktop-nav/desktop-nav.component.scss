@@ -12,9 +12,13 @@
     
     h1 {
       margin: 0;
-      font-size: 1.5rem;
+      font-size: 1.2rem;
       font-weight: 600;
       color: #333;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      max-width: 400px;
     }
   }
   
