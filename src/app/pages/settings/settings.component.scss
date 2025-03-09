@@ -113,6 +113,7 @@
     background-color: #ccc;
     transition: .4s;
     border-radius: 34px;
+    z-index: 1; /* Ensure the slider is above other elements */
     
     &:before {
       position: absolute;
