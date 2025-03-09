@@ -49,47 +49,10 @@
   <main>
     <app-root></app-root>
   </main>
-  <footer role="contentinfo" style="padding: 10px; margin-top: 20px; text-align: center; font-size: 0.9em; color: #6c757d;">
-    <p id="footer-text">© 2025 Spaced Repetition Learning Tool for 11+</p>
-  </footer>
 
   <script>
-    // Language support
-    const translations = {
-      en: {
-        pageTitle: 'Spaced Repetition Learning Tool for 11+',
-        languageLabel: 'Language:',
-        pwaReady: 'PWA Ready: Service Worker is registered and active!',
-        swSupported: 'Service Worker is supported in this browser.',
-        swNotRegistered: 'Service Worker supported but not yet registered.',
-        swNotSupported: 'Service Worker is not supported in this browser. PWA functionality will be limited.',
-        cacheComplete: 'PWA Ready: Service Worker is active and cache is complete!',
-        checkingStatus: 'Checking PWA and Service Worker status...',
-        footerText: '© 2025 Spaced Repetition Learning Tool for 11+'
-      },
-      fr: {
-        pageTitle: 'Outil d\'Apprentissage par Répétition Espacée pour 11+',
-        languageLabel: 'Langue:',
-        pwaReady: 'PWA Prête : Le Service Worker est enregistré et actif !',
-        swSupported: 'Le Service Worker est pris en charge dans ce navigateur.',
-        swNotRegistered: 'Service Worker pris en charge mais pas encore enregistré.',
-        swNotSupported: 'Le Service Worker n\'est pas pris en charge dans ce navigateur. Les fonctionnalités PWA seront limitées.',
-        cacheComplete: 'PWA Prête : Le Service Worker est actif et le cache est complet !',
-        checkingStatus: 'Vérification du statut PWA et du Service Worker...',
-        footerText: '© 2025 Outil d\'Apprentissage par Répétition Espacée pour 11+'
-      },
-      es: {
-        pageTitle: 'Herramienta de Aprendizaje de Repetición Espaciada para 11+',
-        languageLabel: 'Idioma:',
-        pwaReady: '¡PWA Lista: El Service Worker está registrado y activo!',
-        swSupported: 'El Service Worker es compatible con este navegador.',
-        swNotRegistered: 'Service Worker compatible pero aún no registrado.',
-        swNotSupported: 'El Service Worker no es compatible con este navegador. La funcionalidad PWA será limitada.',
-        cacheComplete: '¡PWA Lista: El Service Worker está activo y el caché está completo!',
-        checkingStatus: 'Comprobando el estado de PWA y Service Worker...',
-        footerText: '© 2025 Herramienta de Aprendizaje de Repetición Espaciada para 11+'
-      }
-    };
+    // Import translations from Angular app
+    // The actual translations are now managed in src/app/i18n/translations.ts
     
     // Get user's preferred language or use stored preference
     function getPreferredLanguage() {
@@ -111,7 +74,7 @@
       return detectedLang;
     }
     
-    // Change language function
+    // Change language function - simplified to just store preference and dispatch event
     function changeLanguage(lang) {
       // Store the preference
       localStorage.setItem('preferredLanguage', lang);
@@ -119,59 +82,10 @@
       // Update HTML lang attribute
       document.getElementById('html-root').setAttribute('lang', lang);
       
-      // Update language selector
-      document.getElementById('language').value = lang;
-      
-      // Update all translated text
-      updateTranslatedText(lang);
-      
-      // Announce language change to screen readers
-      const announcement = document.createElement('div');
-      announcement.setAttribute('aria-live', 'assertive');
-      announcement.setAttribute('role', 'status');
-      announcement.style.position = 'absolute';
-      announcement.style.width = '1px';
-      announcement.style.height = '1px';
-      announcement.style.overflow = 'hidden';
-      
-      // Set the announcement text in the new language
-      if (lang === 'en') {
-        announcement.textContent = 'Language changed to English';
-      } else if (lang === 'fr') {
-        announcement.textContent = 'Langue changée en français';
-      } else if (lang === 'es') {
-        announcement.textContent = 'Idioma cambiado a español';
-      }
-      
-      document.body.appendChild(announcement);
-      
-      // Remove the announcement after it's been read
-      setTimeout(() => {
-        document.body.removeChild(announcement);
-      }, 3000);
-      
       // Dispatch event for Angular components to react
-      window.dispatchEvent(new CustomEvent('languageChanged', { 
+      window.dispatchEvent(new CustomEvent('languageChange', { 
         detail: { language: lang } 
       }));
-    }
-    
-    // Update all translated text elements
-    function updateTranslatedText(lang) {
-      // Update page title
-      document.getElementById('page-title').textContent = translations[lang].pageTitle;
-      document.title = translations[lang].pageTitle;
-      
-      // Update language label
-      document.getElementById('language-label').textContent = translations[lang].languageLabel;
-      
-      // Update PWA status text
-      const statusBanner = document.getElementById('pwa-status');
-      const currentState = statusBanner.getAttribute('data-state') || 'checking';
-      statusBanner.textContent = translations[lang][currentState];
-      
-      // Update footer text
-      document.getElementById('footer-text').textContent = translations[lang].footerText;
     }
     
     // Initialize PWA
@@ -179,17 +93,13 @@
       
       // Set initial language based on browser settings
       const initialLang = getPreferredLanguage();
-      document.getElementById('language').value = initialLang;
       document.getElementById('html-root').setAttribute('lang', initialLang);
-      
-      // Update all translated text with initial language
-      updateTranslatedText(initialLang);
       
       // Notify that language has been set
       console.log('Initial language set to:', initialLang);
       
       // Dispatch language change event for Angular components
-      window.dispatchEvent(new CustomEvent('languageChanged', { 
+      window.dispatchEvent(new CustomEvent('languageChange', { 
         detail: { language: initialLang, source: 'initialization' } 
       }));
       

@@ -14,16 +14,22 @@ import { translations, SupportedLanguages } from './i18n/translations';
 })
 export class AppComponent implements OnInit {
   title = '';
+  copyright = '';
   
   ngOnInit() {
     // Get the current language from localStorage
     const storedLang = localStorage.getItem('preferredLanguage') || 'en';
     this.updateTitle(storedLang);
     
+    // Set the document title
+    document.title = this.title;
+    
     // Listen for language changes
     window.addEventListener('languageChange', (e: any) => {
       if (e.detail && e.detail.language) {
         this.updateTitle(e.detail.language);
+        // Update document title when language changes
+        document.title = this.title;
       }
     });
     
@@ -43,5 +49,6 @@ export class AppComponent implements OnInit {
   updateTitle(lang: string): void {
     const safeLanguage = (lang in translations) ? lang as SupportedLanguages : 'en';
     this.title = translations[safeLanguage].app.title;
+    this.copyright = translations[safeLanguage].app.copyright;
   }
 }
