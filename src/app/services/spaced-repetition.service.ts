@@ -1,6 +1,5 @@
 import { Injectable } from '@angular/core';
 import { FSRS, Card, Rating } from 'ts-fsrs';
-import { IParameters } from 'ts-fsrs/dist/fsrs';
 import { StudyItem, UserProgress } from '../models/spaced-repetition.model';
 import { Question } from '../models/question.model';
 import { BehaviorSubject, Observable } from 'rxjs';
@@ -14,7 +13,7 @@ export class SpacedRepetitionService {
   
   constructor() {
     // Initialize FSRS with default parameters
-    const params: IParameters = {
+    const params = {
       request_retention: 0.9,
       maximum_interval: 36500,
       w: [0.4, 0.6, 2.4, 5.8, 4.93, 0.94, 0.86, 0.01, 1.49, 0.14, 0.94, 2.18, 0.05, 0.34, 1.26, 0.29, 2.61],
@@ -79,9 +78,11 @@ export class SpacedRepetitionService {
     
     // Update study item with new scheduling info
     studyItem.lastReviewed = now;
-    studyItem.nextReview = new Date(now.getTime() + schedulingInfo.scheduledDays * 24 * 60 * 60 * 1000);
+    // Default to 1 day if we can't determine the scheduled days
+    const daysToAdd = schedulingInfo.interval || 1;
+    studyItem.nextReview = new Date(now.getTime() + daysToAdd * 24 * 60 * 60 * 1000);
     studyItem.schedulingInfo = schedulingInfo;
-    studyItem.card = schedulingInfo.card as Card;
+    studyItem.card = schedulingInfo.state as Card;
     
     // Save progress
     this.userProgressSubject.next(progress);
