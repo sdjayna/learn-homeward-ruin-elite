@@ -1,21 +1,3 @@
 # Cloudflare Pages configuration
-pages_build_output_dir = "dist/browser"
-
-[build]
-  command = "npm run build"
-  publish = "dist/browser"
-  node_bundler = "esbuild"
-
-[deploy]
-
-[build.environment]
-  NODE_VERSION = "20"
-
-# Disable caching
-[[headers]]
-  for = "/*"
-  [headers.values]
-    Cache-Control = "no-store, no-cache, must-revalidate, proxy-revalidate, max-age=0"
-    Pragma = "no-cache"
-    Expires = "0"
-    Surrogate-Control = "no-store"
+name = "learn-homeward-ruin-elite"
+pages_build_output_dir = "./dist/browser"
