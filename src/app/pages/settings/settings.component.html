@@ -1,0 +1,37 @@
+<div class="settings-container">
+  <header class="settings-header">
+    <h1>Settings</h1>
+    <button class="back-button" [routerLink]="['/']">Back to Home</button>
+  </header>
+  
+  <section class="settings-section">
+    <h2>Language Settings</h2>
+    <div class="language-selector">
+      <label for="language-select">Select your preferred language:</label>
+      <select 
+        id="language-select" 
+        [(ngModel)]="selectedLanguage" 
+        (change)="changeLanguage(selectedLanguage)">
+        <option value="en">English</option>
+        <option value="fr">Français</option>
+        <option value="es">Español</option>
+      </select>
+    </div>
+  </section>
+  
+  <section class="settings-section">
+    <h2>Appearance</h2>
+    <p class="settings-info">More appearance settings coming soon.</p>
+  </section>
+  
+  <section class="settings-section">
+    <h2>Notifications</h2>
+    <p class="settings-info">Notification settings coming soon.</p>
+  </section>
+  
+  <section class="settings-section">
+    <h2>About</h2>
+    <p class="settings-info">Learning App v1.0.0</p>
+    <p class="settings-info">A spaced repetition learning application to help you master key subjects.</p>
+  </section>
+</div>

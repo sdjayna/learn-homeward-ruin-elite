@@ -17,5 +17,9 @@ export const routes: Routes = [
     path: 'progress',
     loadComponent: () => import('./pages/progress/progress.component').then(m => m.ProgressComponent)
   },
+  {
+    path: 'settings',
+    loadComponent: () => import('./pages/settings/settings.component').then(m => m.SettingsComponent)
+  },
   { path: '**', redirectTo: '' }
 ];
