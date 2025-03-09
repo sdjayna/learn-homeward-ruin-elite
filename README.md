@@ -88,7 +88,9 @@ npm install sharp
 
 Create high-resolution source images:
    - `src/assets/source-icon.png` - A square icon image (at least 512x512px)
-   - `src/assets/source-splash.png` - A splash screen image (at least 2732x2732px)
+   - `src/assets/source-splash.png` - A square splash screen image (at least 2732x2732px)
+     - Using a square image is recommended as it will be center-cropped to fit different device aspect ratios
+     - The image should have important content centered, as edges may be cropped on some devices
 
 3. **Generate Assets**:
 

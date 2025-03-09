@@ -30,8 +30,11 @@ const splashScreens = [
   { width: 2048, height: 2732, name: 'splash-2048x2732.png' }, // iPad Pro 12.9"
 ];
 
-// Source image path - you should replace this with your actual source image
+// Source image paths - you should replace these with your actual source images
+// The source icon should be at least 512x512 pixels (square)
 const sourceIconPath = path.join(__dirname, 'assets', 'source-icon.png');
+// The source splash image should be at least 2732x2732 pixels (square)
+// A square image is recommended as it will be cropped to different aspect ratios
 const sourceSplashPath = path.join(__dirname, 'assets', 'source-splash.png');
 
 // Check if source files exist
