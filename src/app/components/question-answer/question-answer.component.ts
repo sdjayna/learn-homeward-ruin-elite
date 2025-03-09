@@ -1,6 +1,7 @@
 import { Component, Input, Output, EventEmitter, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { Question, Answer } from '../../models/question.model';
+import { TranslationStructure } from '../../i18n/translations';
 
 @Component({
   selector: 'app-question-answer',
@@ -11,6 +12,7 @@ import { Question, Answer } from '../../models/question.model';
 })
 export class QuestionAnswerComponent implements OnInit {
   @Input() question: Question | null = null;
+  @Input() translations!: TranslationStructure;
   @Output() answerSelected = new EventEmitter<Answer>();
   
   selectedAnswer: Answer | null = null;

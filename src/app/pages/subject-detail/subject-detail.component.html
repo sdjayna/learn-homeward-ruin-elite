@@ -9,7 +9,7 @@
   
   <div class="subject-content">
     <aside class="topics-sidebar">
-      <h2>Topics</h2>
+      <h2>{{ translations.home.topics }}</h2>
       <ul class="topics-list">
         <li *ngFor="let topic of subject.topics" 
             [class.active]="selectedTopic?.id === topic.id"
@@ -19,15 +19,15 @@
       </ul>
       <div class="sidebar-actions">
         <button class="primary-button" [routerLink]="['/study']">
-          Start Study Session
+          {{ translations.subjects.startStudySession }}
         </button>
       </div>
     </aside>
     
     <main class="topic-content">
       <div *ngIf="!selectedTopic" class="no-topic-selected">
-        <h2>Select a topic to begin</h2>
-        <p>Choose a topic from the sidebar to see available questions and resources.</p>
+        <h2>{{ translations.subjects.selectTopic }}</h2>
+        <p>{{ translations.subjects.selectTopicMessage }}</p>
       </div>
       
       <div *ngIf="selectedTopic" class="topic-details">
@@ -35,7 +35,7 @@
         <p>{{ selectedTopic.description }}</p>
         
         <div class="topic-questions" *ngIf="topicQuestions.length > 0">
-          <h3>Sample Questions</h3>
+          <h3>{{ translations.subjects.sampleQuestions }}</h3>
           <div class="questions-list">
             <div *ngFor="let question of topicQuestions" class="question-card">
               <p>{{ question.text }}</p>
@@ -47,7 +47,7 @@
         </div>
         
         <div *ngIf="topicQuestions.length === 0" class="no-questions">
-          <p>No sample questions available for this topic yet.</p>
+          <p>{{ translations.subjects.noQuestions }}</p>
         </div>
       </div>
     </main>
@@ -55,9 +55,9 @@
 </div>
 
 <div class="not-found" *ngIf="!subject">
-  <h2>Subject not found</h2>
-  <p>The subject you're looking for doesn't exist.</p>
+  <h2>{{ translations.subjects.subjectNotFound }}</h2>
+  <p>{{ translations.subjects.subjectNotFoundMessage }}</p>
   <button class="primary-button" [routerLink]="['/']">
-    Return to Home
+    {{ translations.subjects.returnToHome }}
   </button>
 </div>

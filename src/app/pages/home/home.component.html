@@ -1,40 +1,40 @@
 <div class="home-container">
   <header class="home-header">
     <h1>{{ appTitle }}</h1>
-    <p>Master key subjects with spaced repetition learning</p>
+    <p>{{ translations.app.tagline }}</p>
   </header>
   
   <section class="exam-date-section">
-    <h2>Target Exam Date</h2>
+    <h2>{{ translations.home.targetExamDate }}</h2>
     <div class="date-picker">
       <input type="date" [(ngModel)]="targetExamDate" (change)="updateTargetDate()">
     </div>
     <p class="date-info">
-      Setting your exam date helps optimize your study schedule
+      {{ translations.home.datePickerHelp }}
     </p>
   </section>
   
   <section class="subjects-section">
-    <h2>Study Subjects</h2>
+    <h2>{{ translations.home.studySubjects }}</h2>
     
     <div class="subjects-grid">
       <div *ngFor="let subject of subjects" class="subject-card" [routerLink]="['/subjects', subject.type]">
         <div class="subject-icon">{{ getSubjectIcon(subject.type) }}</div>
         <h3>{{ subject.name }}</h3>
         <p>{{ subject.description }}</p>
-        <div class="topic-count">{{ subject.topics.length }} topics</div>
+        <div class="topic-count">{{ subject.topics.length }} {{ translations.home.topics }}</div>
       </div>
     </div>
   </section>
   
   <section class="quick-actions">
-    <h2>Quick Actions</h2>
+    <h2>{{ translations.home.quickActions }}</h2>
     <div class="actions-grid">
       <button class="action-button" [routerLink]="['/study']">
-        Start Study Session
+        {{ translations.home.startStudySession }}
       </button>
       <button class="action-button" [routerLink]="['/progress']">
-        View Progress
+        {{ translations.home.viewProgress }}
       </button>
     </div>
   </section>

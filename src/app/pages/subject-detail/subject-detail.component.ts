@@ -5,6 +5,7 @@ import { Subject, SubjectType, SUBJECTS, Topic } from '../../models/subject.mode
 import { QuestionService } from '../../services/question.service';
 import { Question } from '../../models/question.model';
 import { map } from 'rxjs/operators';
+import { translations, SupportedLanguages, TranslationStructure } from '../../i18n/translations';
 
 @Component({
   selector: 'app-subject-detail',
@@ -17,6 +18,7 @@ export class SubjectDetailComponent implements OnInit {
   subject: Subject | undefined;
   selectedTopic: Topic | null = null;
   topicQuestions: Question[] = [];
+  translations!: TranslationStructure;
   
   constructor(
     private route: ActivatedRoute,
@@ -24,6 +26,17 @@ export class SubjectDetailComponent implements OnInit {
   ) { }
   
   ngOnInit(): void {
+    // Get the current language from localStorage
+    const storedLang = localStorage.getItem('preferredLanguage') || 'en';
+    this.updateTranslations(storedLang);
+    
+    // Listen for language changes
+    window.addEventListener('languageChange', (e: any) => {
+      if (e.detail && e.detail.language) {
+        this.updateTranslations(e.detail.language);
+      }
+    });
+    
     this.route.paramMap.subscribe(params => {
       const subjectType = params.get('type');
       if (subjectType) {
@@ -32,6 +45,11 @@ export class SubjectDetailComponent implements OnInit {
         this.topicQuestions = [];
       }
     });
+  }
+  
+  updateTranslations(lang: string): void {
+    const safeLanguage = (lang in translations) ? lang as SupportedLanguages : 'en';
+    this.translations = translations[safeLanguage];
   }
   
   selectTopic(topic: Topic): void {

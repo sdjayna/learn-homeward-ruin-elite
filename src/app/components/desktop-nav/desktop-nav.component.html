@@ -3,9 +3,9 @@
     <h1>{{ appTitle }}</h1>
   </div>
   <div class="nav-links">
-    <a [routerLink]="['/']" [routerLinkActive]="'active'" [routerLinkActiveOptions]="{exact: true}">Home</a>
-    <a [routerLink]="['/study']" [routerLinkActive]="'active'">Study</a>
-    <a [routerLink]="['/progress']" [routerLinkActive]="'active'">Progress</a>
-    <a [routerLink]="['/settings']" [routerLinkActive]="'active'">Settings</a>
+    <a [routerLink]="['/']" [routerLinkActive]="'active'" [routerLinkActiveOptions]="{exact: true}">{{ translations.ui.home }}</a>
+    <a [routerLink]="['/study']" [routerLinkActive]="'active'">{{ translations.ui.study }}</a>
+    <a [routerLink]="['/progress']" [routerLinkActive]="'active'">{{ translations.ui.progress }}</a>
+    <a [routerLink]="['/settings']" [routerLinkActive]="'active'">{{ translations.ui.settings }}</a>
   </div>
 </nav>

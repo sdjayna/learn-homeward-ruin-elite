@@ -1,13 +1,13 @@
 <div class="settings-container">
   <header class="settings-header">
-    <h1>Settings</h1>
-    <button class="back-button" [routerLink]="['/']">Back to Home</button>
+    <h1>{{ translations.ui.settings }}</h1>
+    <button class="back-button" [routerLink]="['/']">{{ translations.ui.back }} {{ translations.ui.home }}</button>
   </header>
   
   <section class="settings-section">
-    <h2>Language Settings</h2>
+    <h2>{{ translations.settings.languageSettings }}</h2>
     <div class="language-selector">
-      <label for="language-select">Select your preferred language:</label>
+      <label for="language-select">{{ translations.settings.selectLanguage }}</label>
       <select 
         id="language-select" 
         [(ngModel)]="selectedLanguage" 
@@ -20,18 +20,18 @@
   </section>
   
   <section class="settings-section">
-    <h2>Appearance</h2>
-    <p class="settings-info">More appearance settings coming soon.</p>
+    <h2>{{ translations.settings.appearance }}</h2>
+    <p class="settings-info">{{ translations.settings.appearanceComingSoon }}</p>
   </section>
   
   <section class="settings-section">
-    <h2>Notifications</h2>
-    <p class="settings-info">Notification settings coming soon.</p>
+    <h2>{{ translations.settings.notifications }}</h2>
+    <p class="settings-info">{{ translations.settings.notificationsComingSoon }}</p>
   </section>
   
   <section class="settings-section">
-    <h2>About</h2>
-    <p class="settings-info">{{ appTitle }} v1.0.0</p>
-    <p class="settings-info">A spaced repetition learning application to help you master key subjects.</p>
+    <h2>{{ translations.ui.about }}</h2>
+    <p class="settings-info">{{ appTitle }} {{ translations.app.version }}</p>
+    <p class="settings-info">{{ translations.app.description }}</p>
   </section>
 </div>

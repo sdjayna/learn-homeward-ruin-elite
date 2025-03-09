@@ -8,6 +8,7 @@ import { Question } from '../../models/question.model';
 import { SUBJECTS } from '../../models/subject.model';
 import { forkJoin, of } from 'rxjs';
 import { map, switchMap } from 'rxjs/operators';
+import { translations, SupportedLanguages, TranslationStructure } from '../../i18n/translations';
 
 interface TopicProgress {
   topicId: string;
@@ -31,6 +32,7 @@ export class ProgressComponent implements OnInit {
   topicProgress: TopicProgress[] = [];
   daysUntilExam: number | null = null;
   totalMasteryPercentage: number = 0;
+  translations!: TranslationStructure;
   
   constructor(
     private spacedRepetitionService: SpacedRepetitionService,
@@ -38,7 +40,23 @@ export class ProgressComponent implements OnInit {
   ) { }
   
   ngOnInit(): void {
+    // Get the current language from localStorage
+    const storedLang = localStorage.getItem('preferredLanguage') || 'en';
+    this.updateTranslations(storedLang);
+    
+    // Listen for language changes
+    window.addEventListener('languageChange', (e: any) => {
+      if (e.detail && e.detail.language) {
+        this.updateTranslations(e.detail.language);
+      }
+    });
+    
     this.loadProgress();
+  }
+  
+  updateTranslations(lang: string): void {
+    const safeLanguage = (lang in translations) ? lang as SupportedLanguages : 'en';
+    this.translations = translations[safeLanguage];
   }
   
   loadProgress(): void {

@@ -4,6 +4,7 @@ import { QuestionAnswerComponent } from '../../components/question-answer/questi
 import { Question, Answer } from '../../models/question.model';
 import { QuestionService } from '../../services/question.service';
 import { SpacedRepetitionService } from '../../services/spaced-repetition.service';
+import { translations, SupportedLanguages, TranslationStructure } from '../../i18n/translations';
 
 @Component({
   selector: 'app-study',
@@ -18,6 +19,7 @@ export class StudyComponent implements OnInit {
   questionsCompleted = 0;
   loading = true;
   sessionComplete = false;
+  translations!: TranslationStructure;
   
   constructor(
     private questionService: QuestionService,
@@ -25,7 +27,23 @@ export class StudyComponent implements OnInit {
   ) { }
   
   ngOnInit(): void {
+    // Get the current language from localStorage
+    const storedLang = localStorage.getItem('preferredLanguage') || 'en';
+    this.updateTranslations(storedLang);
+    
+    // Listen for language changes
+    window.addEventListener('languageChange', (e: any) => {
+      if (e.detail && e.detail.language) {
+        this.updateTranslations(e.detail.language);
+      }
+    });
+    
     this.loadNextQuestions();
+  }
+  
+  updateTranslations(lang: string): void {
+    const safeLanguage = (lang in translations) ? lang as SupportedLanguages : 'en';
+    this.translations = translations[safeLanguage];
   }
   
   loadNextQuestions(): void {

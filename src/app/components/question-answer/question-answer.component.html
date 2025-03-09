@@ -1,6 +1,6 @@
 <div class="question-answer-container" *ngIf="question">
   <div class="question-pane">
-    <h2>Question</h2>
+    <h2>{{ translations.study.question }}</h2>
     <p class="question-text">{{ question.text }}</p>
     
     <div *ngIf="question.imageUrl" class="question-image">
@@ -9,7 +9,7 @@
   </div>
   
   <div class="answer-pane">
-    <h2>Choose your answer</h2>
+    <h2>{{ translations.study.chooseAnswer }}</h2>
     <div class="answer-options">
       <button 
         *ngFor="let answer of question.answers" 
@@ -22,15 +22,15 @@
     
     <div *ngIf="answered && selectedAnswer" class="answer-feedback">
       <div *ngIf="selectedAnswer.isCorrect" class="correct-feedback">
-        <h3>Correct!</h3>
+        <h3>{{ translations.study.correct }}</h3>
         <p *ngIf="selectedAnswer.explanation">{{ selectedAnswer.explanation }}</p>
       </div>
       
       <div *ngIf="!selectedAnswer.isCorrect" class="incorrect-feedback">
-        <h3>Incorrect</h3>
+        <h3>{{ translations.study.incorrect }}</h3>
         <p *ngIf="selectedAnswer.explanation">{{ selectedAnswer.explanation }}</p>
         <p *ngIf="!selectedAnswer.explanation">
-          The correct answer was: {{ getCorrectAnswerText() }}
+          {{ translations.study.correctAnswerWas }}: {{ getCorrectAnswerText() }}
         </p>
       </div>
     </div>

@@ -1,15 +1,15 @@
 <div class="progress-container">
   <header class="progress-header">
-    <h1>Your Learning Progress</h1>
+    <h1>{{ translations.progress.yourLearningProgress }}</h1>
     <div *ngIf="daysUntilExam !== null" class="exam-countdown">
       <span [class.urgent]="daysUntilExam < 14">
-        {{ daysUntilExam }} days until exam
+        {{ daysUntilExam }} {{ translations.progress.daysUntilExam }}
       </span>
     </div>
   </header>
   
   <section class="overall-progress">
-    <h2>Overall Mastery</h2>
+    <h2>{{ translations.progress.overallMastery }}</h2>
     <div class="mastery-meter">
       <div class="mastery-bar" 
            [style.width.%]="totalMasteryPercentage"
@@ -20,8 +20,8 @@
   </section>
   
   <section class="topic-progress">
-    <h2>Progress by Topic</h2>
-    <p class="topic-hint">Topics are sorted with your weakest areas first</p>
+    <h2>{{ translations.progress.progressByTopic }}</h2>
+    <p class="topic-hint">{{ translations.progress.topicHint }}</p>
     
     <div class="topics-list">
       <div *ngFor="let topic of topicProgress" class="topic-card">
@@ -29,14 +29,14 @@
           <h3>{{ topic.topicName }}</h3>
           <div class="subject-name">{{ topic.subjectName }}</div>
           <div class="topic-stats">
-            <div>Questions: {{ topic.totalQuestions }}</div>
-            <div>Correct: {{ topic.correctCount }}</div>
-            <div>Incorrect: {{ topic.incorrectCount }}</div>
+            <div>{{ translations.progress.questions }}: {{ topic.totalQuestions }}</div>
+            <div>{{ translations.progress.correct }}: {{ topic.correctCount }}</div>
+            <div>{{ translations.progress.incorrect }}: {{ topic.incorrectCount }}</div>
           </div>
         </div>
         
         <div class="topic-mastery">
-          <div class="mastery-label">Mastery</div>
+          <div class="mastery-label">{{ translations.progress.mastery }}</div>
           <div class="mastery-meter small">
             <div class="mastery-bar" 
                  [style.width.%]="topic.masteryPercentage"
@@ -48,9 +48,9 @@
       </div>
       
       <div *ngIf="topicProgress.length === 0" class="no-progress">
-        <p>No progress data available yet. Start studying to see your progress!</p>
+        <p>{{ translations.progress.noProgressData }}</p>
         <button class="primary-button" [routerLink]="['/study']">
-          Start Study Session
+          {{ translations.home.startStudySession }}
         </button>
       </div>
     </div>
@@ -58,10 +58,10 @@
   
   <section class="progress-actions">
     <button class="primary-button" [routerLink]="['/study']">
-      Continue Studying
+      {{ translations.progress.continueStudying }}
     </button>
     <button class="secondary-button" [routerLink]="['/']">
-      Back to Home
+      {{ translations.progress.backToHome }}
     </button>
   </section>
 </div>
