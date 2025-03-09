@@ -1,0 +1,18 @@
+<nav class="mobile-nav">
+  <a [routerLink]="['/']" routerLinkActive="active" [routerLinkActiveOptions]="{exact: true}">
+    <div class="nav-icon">🏠</div>
+    <div class="nav-label">Home</div>
+  </a>
+  <a [routerLink]="['/study']" routerLinkActive="active">
+    <div class="nav-icon">📚</div>
+    <div class="nav-label">Study</div>
+  </a>
+  <a [routerLink]="['/progress']" routerLinkActive="active">
+    <div class="nav-icon">📊</div>
+    <div class="nav-label">Progress</div>
+  </a>
+  <a [routerLink]="['/settings']" routerLinkActive="active">
+    <div class="nav-icon">⚙️</div>
+    <div class="nav-label">Settings</div>
+  </a>
+</nav>

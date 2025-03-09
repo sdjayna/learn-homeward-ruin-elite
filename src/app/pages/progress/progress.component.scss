@@ -2,6 +2,10 @@
   max-width: 1200px;
   margin: 0 auto;
   padding: 2rem 1rem;
+  
+  @media (max-width: 768px) {
+    padding-bottom: 4rem;
+  }
 }
 
 .progress-header {

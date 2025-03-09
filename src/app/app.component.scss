@@ -3,6 +3,16 @@
   min-height: 100vh;
 }
 
+.content-wrapper {
+  padding-bottom: 60px; /* Space for mobile nav */
+}
+
+@media (min-width: 769px) {
+  .content-wrapper {
+    padding-bottom: 0;
+  }
+}
+
 .settings-icon {
   position: fixed;
   top: 20px;
@@ -26,5 +36,11 @@
   
   svg {
     color: #4a6da7;
+  }
+}
+
+.desktop-only {
+  @media (max-width: 768px) {
+    display: none;
   }
 }
