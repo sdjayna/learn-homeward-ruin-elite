@@ -78,11 +78,36 @@ export class SpacedRepetitionService {
     
     // Update study item with new scheduling info
     studyItem.lastReviewed = now;
+    
     // Default to 1 day if we can't determine the scheduled days
-    const daysToAdd = schedulingInfo.interval || 1;
+    // Extract scheduling info based on what's available in the response
+    let daysToAdd = 1; // Default
+    if (typeof schedulingInfo === 'object') {
+      // Try to find a property that might contain the interval
+      if ('scheduledDays' in schedulingInfo) {
+        daysToAdd = (schedulingInfo as any).scheduledDays;
+      } else if ('interval' in schedulingInfo) {
+        daysToAdd = (schedulingInfo as any).interval;
+      } else if ('days' in schedulingInfo) {
+        daysToAdd = (schedulingInfo as any).days;
+      }
+    }
+    
     studyItem.nextReview = new Date(now.getTime() + daysToAdd * 24 * 60 * 60 * 1000);
     studyItem.schedulingInfo = schedulingInfo;
-    studyItem.card = schedulingInfo.state as Card;
+    
+    // Try to extract the updated card state
+    if (typeof schedulingInfo === 'object') {
+      if ('card' in schedulingInfo) {
+        studyItem.card = (schedulingInfo as any).card as Card;
+      } else if ('state' in schedulingInfo) {
+        studyItem.card = (schedulingInfo as any).state as Card;
+      } else {
+        // If we can't find the updated card, just keep the existing one
+        // and update any properties we can
+        studyItem.card = { ...studyItem.card };
+      }
+    }
     
     // Save progress
     this.userProgressSubject.next(progress);
