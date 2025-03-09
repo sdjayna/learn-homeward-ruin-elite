@@ -12,7 +12,7 @@ import { DesktopNavComponent } from './components/desktop-nav/desktop-nav.compon
   styleUrl: './app.component.scss'
 })
 export class AppComponent implements OnInit {
-  title = 'Jupiter Jayna\'s Spaced Repetition Learning Tool for 11+';
+  title = 'Spaced Repetition Learning Tool for 11+';
   
   ngOnInit() {
     // Check if service worker update is available
