@@ -3,6 +3,7 @@ import { RouterOutlet, RouterModule } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { MobileNavComponent } from './components/mobile-nav/mobile-nav.component';
 import { DesktopNavComponent } from './components/desktop-nav/desktop-nav.component';
+import { translations } from './i18n/translations';
 
 @Component({
   selector: 'app-root',
@@ -12,9 +13,20 @@ import { DesktopNavComponent } from './components/desktop-nav/desktop-nav.compon
   styleUrl: './app.component.scss'
 })
 export class AppComponent implements OnInit {
-  title = 'Spaced Repetition Learning Tool for 11+';
+  title = '';
   
   ngOnInit() {
+    // Get the current language from localStorage
+    const storedLang = localStorage.getItem('preferredLanguage') || 'en';
+    this.updateTitle(storedLang);
+    
+    // Listen for language changes
+    window.addEventListener('languageChange', (e: any) => {
+      if (e.detail && e.detail.language) {
+        this.updateTitle(e.detail.language);
+      }
+    });
+    
     // Check if service worker update is available
     if ('serviceWorker' in navigator) {
       navigator.serviceWorker.ready.then(registration => {
@@ -25,6 +37,14 @@ export class AppComponent implements OnInit {
       window.addEventListener('beforeinstallprompt', (e) => {
         console.debug('PWA: App can be installed');
       });
+    }
+  }
+  
+  updateTitle(lang: string): void {
+    if (translations[lang] && translations[lang].app && translations[lang].app.title) {
+      this.title = translations[lang].app.title;
+    } else {
+      this.title = translations.en.app.title;
     }
   }
 }

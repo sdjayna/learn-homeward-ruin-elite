@@ -1,6 +1,7 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
+import { translations } from '../../i18n/translations';
 
 @Component({
   selector: 'app-desktop-nav',
@@ -9,6 +10,29 @@ import { RouterModule } from '@angular/router';
   templateUrl: './desktop-nav.component.html',
   styleUrls: ['./desktop-nav.component.scss']
 })
-export class DesktopNavComponent {
+export class DesktopNavComponent implements OnInit {
+  appTitle = '';
+  
   constructor() { }
+  
+  ngOnInit(): void {
+    // Get the current language from localStorage
+    const storedLang = localStorage.getItem('preferredLanguage') || 'en';
+    this.updateTitle(storedLang);
+    
+    // Listen for language changes
+    window.addEventListener('languageChange', (e: any) => {
+      if (e.detail && e.detail.language) {
+        this.updateTitle(e.detail.language);
+      }
+    });
+  }
+  
+  updateTitle(lang: string): void {
+    if (translations[lang] && translations[lang].app && translations[lang].app.title) {
+      this.appTitle = translations[lang].app.title;
+    } else {
+      this.appTitle = translations.en.app.title;
+    }
+  }
 }
