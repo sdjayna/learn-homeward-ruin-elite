@@ -88,7 +88,7 @@ wrangler login
 ng build
 
 # Deploy to Cloudflare Pages
-wrangler pages deploy dist
+wrangler pages deploy
 ```
 
 After deployment, Wrangler will provide a URL where your application is accessible.
