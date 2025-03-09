@@ -1,0 +1,20 @@
+{
+  "app": {
+    "title": "Aprende Homeward Ruin Elite",
+    "welcome": "Bienvenido a Aprende Homeward Ruin Elite",
+    "description": "Una aplicación web progresiva construida con Angular"
+  },
+  "pwa": {
+    "ready": "¡PWA Lista: El Service Worker está registrado y activo!",
+    "swSupported": "El Service Worker es compatible con este navegador.",
+    "swNotRegistered": "Service Worker compatible pero aún no registrado.",
+    "swNotSupported": "El Service Worker no es compatible con este navegador. La funcionalidad PWA será limitada.",
+    "cacheComplete": "¡PWA Lista: El Service Worker está activo y el caché está completo!"
+  },
+  "ui": {
+    "languageSelector": "Idioma",
+    "home": "Inicio",
+    "settings": "Configuración",
+    "about": "Acerca de"
+  }
+}

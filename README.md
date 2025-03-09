@@ -119,6 +119,7 @@ This application uses a custom service worker implementation with the following 
 - **Status Monitoring**: Visual feedback about PWA status in the UI
 - **Cache Management**: Caching of core application files for offline use
 - **Update Handling**: Detection and notification of service worker updates
+- **Multilingual Support**: Handles resources in English, French, and Spanish
 
 The service worker registration process:
 1. Unregisters any existing service workers to ensure a clean state
@@ -148,6 +149,21 @@ The Web App Manifest (`src/manifest.webmanifest`) configures how the app appears
 - Display mode (standalone)
 - Icons for different device sizes
 - Screenshots for app stores
+- Localized metadata for English, French, and Spanish
+
+### Language Support
+
+This application supports multiple languages:
+
+- **English**: Default language
+- **French**: Full translation support
+- **Spanish**: Full translation support
+
+Language selection is available through a dropdown menu in the UI. The application will:
+1. Initially detect the user's browser language
+2. Allow manual language selection
+3. Remember the user's language preference
+4. Update all UI elements when language is changed
 
 ## PWA Assets
 

@@ -8,6 +8,19 @@ const urlsToCache = [
   // Don't hardcode JS filenames as they may change with each build
 ];
 
+// Language-specific resources
+const languageResources = {
+  en: [
+    // English-specific resources would go here
+  ],
+  fr: [
+    // French-specific resources would go here
+  ],
+  es: [
+    // Spanish-specific resources would go here
+  ]
+};
+
 self.addEventListener('install', event => {
   event.waitUntil(
     caches.open(CACHE_NAME)
@@ -29,6 +42,29 @@ self.addEventListener('install', event => {
             });
         });
         
+        // Detect user's preferred language
+        const userLang = self.navigator?.language?.split('-')[0] || 'en';
+        const langToCache = ['en', 'fr', 'es'].includes(userLang) ? userLang : 'en';
+        
+        // Cache language-specific resources
+        if (languageResources[langToCache] && languageResources[langToCache].length > 0) {
+          const langCachePromises = languageResources[langToCache].map(url => {
+            return fetch(url)
+              .then(response => {
+                if (!response.ok) {
+                  throw new Error(`Failed to fetch language resource ${url}`);
+                }
+                return cache.put(url, response);
+              })
+              .catch(error => {
+                console.warn(`Failed to cache language resource ${url}: ${error.message}`);
+                return Promise.resolve();
+              });
+          });
+          
+          cachePromises.push(...langCachePromises);
+        }
+        
         return Promise.all(cachePromises)
           .then(() => {
             console.log('Caching completed successfully');
@@ -39,7 +75,8 @@ self.addEventListener('install', event => {
             clients.forEach(client => {
               client.postMessage({
                 type: 'CACHE_COMPLETE',
-                timestamp: new Date().getTime()
+                timestamp: new Date().getTime(),
+                language: langToCache
               });
             });
             return self.skipWaiting();
@@ -54,13 +91,61 @@ self.addEventListener('activate', event => {
 });
 
 self.addEventListener('fetch', event => {
-  event.respondWith(
-    caches.match(event.request)
-      .then(response => {
-        if (response) {
-          return response;
-        }
-        return fetch(event.request);
+  // Check if this is a request for a language-specific resource
+  const url = new URL(event.request.url);
+  const langParam = url.searchParams.get('lang');
+  
+  if (langParam && ['en', 'fr', 'es'].includes(langParam)) {
+    // Handle language-specific request
+    event.respondWith(
+      caches.open(CACHE_NAME).then(cache => {
+        // Try to find the language-specific version first
+        return cache.match(event.request).then(response => {
+          if (response) {
+            return response;
+          }
+          
+          // If not in cache, fetch from network
+          return fetch(event.request).then(networkResponse => {
+            // Cache the response for future use
+            cache.put(event.request, networkResponse.clone());
+            return networkResponse;
+          });
+        });
       })
-  );
+    );
+  } else {
+    // Handle regular request
+    event.respondWith(
+      caches.match(event.request)
+        .then(response => {
+          if (response) {
+            return response;
+          }
+          return fetch(event.request);
+        })
+    );
+  }
+});
+
+// Listen for language change messages from clients
+self.addEventListener('message', event => {
+  if (event.data && event.data.type === 'LANGUAGE_CHANGED') {
+    const lang = event.data.language;
+    
+    // Cache language-specific resources if they exist
+    if (languageResources[lang] && languageResources[lang].length > 0) {
+      caches.open(CACHE_NAME).then(cache => {
+        languageResources[lang].forEach(url => {
+          fetch(url).then(response => {
+            if (response.ok) {
+              cache.put(url, response);
+            }
+          }).catch(error => {
+            console.warn(`Failed to cache language resource ${url}: ${error.message}`);
+          });
+        });
+      });
+    }
+  }
 });

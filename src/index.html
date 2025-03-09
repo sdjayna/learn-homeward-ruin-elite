@@ -1,5 +1,5 @@
 <!doctype html>
-<html lang="en">
+<html lang="en" id="html-root">
 <head>
   <meta charset="utf-8">
   <title>LearnHomewardRuinElite</title>
@@ -46,29 +46,111 @@
 </head>
 <body>
   <h1>stephen jayna</h1>
+  <div id="language-selector" style="padding: 10px; margin: 10px; border-radius: 5px; background-color: #e9ecef;">
+    <label for="language">Language / Langue / Idioma: </label>
+    <select id="language" onchange="changeLanguage(this.value)">
+      <option value="en">English</option>
+      <option value="fr">Français</option>
+      <option value="es">Español</option>
+    </select>
+  </div>
+  
   <div id="pwa-status" style="background-color: #f8d7da; color: #721c24; padding: 10px; margin: 10px; border-radius: 5px; display: none;">
     Checking PWA and Service Worker status...
   </div>
   <app-root></app-root>
 
   <script>
+    // Language support
+    const translations = {
+      en: {
+        pwaReady: 'PWA Ready: Service Worker is registered and active!',
+        swSupported: 'Service Worker is supported in this browser.',
+        swNotRegistered: 'Service Worker supported but not yet registered.',
+        swNotSupported: 'Service Worker is not supported in this browser. PWA functionality will be limited.',
+        cacheComplete: 'PWA Ready: Service Worker is active and cache is complete!',
+        checkingStatus: 'Checking PWA and Service Worker status...'
+      },
+      fr: {
+        pwaReady: 'PWA Prête : Le Service Worker est enregistré et actif !',
+        swSupported: 'Le Service Worker est pris en charge dans ce navigateur.',
+        swNotRegistered: 'Service Worker pris en charge mais pas encore enregistré.',
+        swNotSupported: 'Le Service Worker n\'est pas pris en charge dans ce navigateur. Les fonctionnalités PWA seront limitées.',
+        cacheComplete: 'PWA Prête : Le Service Worker est actif et le cache est complet !',
+        checkingStatus: 'Vérification du statut PWA et du Service Worker...'
+      },
+      es: {
+        pwaReady: '¡PWA Lista: El Service Worker está registrado y activo!',
+        swSupported: 'El Service Worker es compatible con este navegador.',
+        swNotRegistered: 'Service Worker compatible pero aún no registrado.',
+        swNotSupported: 'El Service Worker no es compatible con este navegador. La funcionalidad PWA será limitada.',
+        cacheComplete: '¡PWA Lista: El Service Worker está activo y el caché está completo!',
+        checkingStatus: 'Comprobando el estado de PWA y Service Worker...'
+      }
+    };
+    
+    // Get user's preferred language or use stored preference
+    function getPreferredLanguage() {
+      const storedLang = localStorage.getItem('preferredLanguage');
+      if (storedLang && ['en', 'fr', 'es'].includes(storedLang)) {
+        return storedLang;
+      }
+      
+      const browserLang = navigator.language.split('-')[0];
+      return ['en', 'fr', 'es'].includes(browserLang) ? browserLang : 'en';
+    }
+    
+    // Change language function
+    function changeLanguage(lang) {
+      // Store the preference
+      localStorage.setItem('preferredLanguage', lang);
+      
+      // Update HTML lang attribute
+      document.getElementById('html-root').setAttribute('lang', lang);
+      
+      // Update language selector
+      document.getElementById('language').value = lang;
+      
+      // Update PWA status text
+      updatePwaStatusText(lang);
+      
+      // Dispatch event for Angular components to react
+      window.dispatchEvent(new CustomEvent('languageChanged', { detail: { language: lang } }));
+    }
+    
+    // Update PWA status text based on current state and language
+    function updatePwaStatusText(lang) {
+      const statusBanner = document.getElementById('pwa-status');
+      const currentState = statusBanner.getAttribute('data-state') || 'checking';
+      
+      statusBanner.textContent = translations[lang][currentState];
+    }
+    
     // Display PWA status
     document.addEventListener('DOMContentLoaded', function() {
       const statusBanner = document.getElementById('pwa-status');
       statusBanner.style.display = 'block';
       
+      // Set initial language
+      const initialLang = getPreferredLanguage();
+      document.getElementById('language').value = initialLang;
+      document.getElementById('html-root').setAttribute('lang', initialLang);
+      
       // Check if service worker is supported
       if ('serviceWorker' in navigator) {
-        statusBanner.innerHTML = 'Service Worker is supported in this browser.';
+        statusBanner.setAttribute('data-state', 'swSupported');
+        statusBanner.textContent = translations[initialLang].swSupported;
         statusBanner.style.backgroundColor = '#d4edda';
         statusBanner.style.color = '#155724';
         
         // Check if service worker is registered
         navigator.serviceWorker.getRegistration().then(registration => {
           if (registration) {
-            statusBanner.innerHTML = 'PWA Ready: Service Worker is registered and active!';
+            statusBanner.setAttribute('data-state', 'pwaReady');
+            statusBanner.textContent = translations[initialLang].pwaReady;
           } else {
-            statusBanner.innerHTML = 'Service Worker supported but not yet registered.';
+            statusBanner.setAttribute('data-state', 'swNotRegistered');
+            statusBanner.textContent = translations[initialLang].swNotRegistered;
             statusBanner.style.backgroundColor = '#fff3cd';
             statusBanner.style.color = '#856404';
           }
@@ -77,13 +159,15 @@
         // Listen for messages from the service worker
         navigator.serviceWorker.addEventListener('message', event => {
           if (event.data && event.data.type === 'CACHE_COMPLETE') {
-            statusBanner.innerHTML = 'PWA Ready: Service Worker is active and cache is complete!';
+            statusBanner.setAttribute('data-state', 'cacheComplete');
+            statusBanner.textContent = translations[initialLang].cacheComplete;
             statusBanner.style.backgroundColor = '#d4edda';
             statusBanner.style.color = '#155724';
           }
         });
       } else {
-        statusBanner.innerHTML = 'Service Worker is not supported in this browser. PWA functionality will be limited.';
+        statusBanner.setAttribute('data-state', 'swNotSupported');
+        statusBanner.textContent = translations[initialLang].swNotSupported;
       }
     });
   </script>
